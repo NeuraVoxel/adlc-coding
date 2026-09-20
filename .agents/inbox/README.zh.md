@@ -68,8 +68,8 @@ Type: feature
 
 | Skill | 用途 |
 |---|---|
-| [kit-inbox-capture](../skills/kit-inbox-capture/SKILL.md) | 只需主体（可选标题 / slug / Notes / type）：写 spark（类型须落定，不得静默缺省）并更新 `QUEUE.md` |
-| [kit-inbox-promote](../skills/kit-inbox-promote/SKILL.md) | 明确升格某条 `open` spark 为 `proposed/` Agent Note——class 由类型推导，除非显式给定——并改状态与队列 |
+| [adlc-inbox-capture](../skills/adlc-inbox-capture/SKILL.md) | 只需主体（可选标题 / slug / Notes / type）：写 spark（类型须落定，不得静默缺省）并更新 `QUEUE.md` |
+| [adlc-inbox-promote](../skills/adlc-inbox-promote/SKILL.md) | 明确升格某条 `open` spark 为 `proposed/` Agent Note——class 由类型推导，除非显式给定——并改状态与队列 |
 
 捕获不升格；升格须当轮明确提出。
 

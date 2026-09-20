@@ -11,7 +11,7 @@ The repository enforced the *structure* of its documentation but never the *exis
 
 Both contradict the root standing order never to silently skip a missing referent; the violations sat in the document and distribution layers instead of the code layer. The class had recurred twice, which is this repository's threshold for turning a soft convention into a gate.
 
-Promoted from the inbox spark [doc-reference-integrity-not-gated](../../../inbox/2026-09-15-doc-reference-integrity-not-gated.md); the walkthrough that surfaced it is the AI engineering capabilities retrospective, gaps 9 and 10 — a machine-local learning note under `.agents/learning/private/`, outside the repository.
+Promoted from the inbox spark "doc-reference-integrity-not-gated" (the spark file has since been cleared from the inbox); the walkthrough that surfaced it is the AI engineering capabilities retrospective, gaps 9 and 10 — a machine-local learning note under `.agents/learning/private/`, outside the repository.
 
 ## Decision
 

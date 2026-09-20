@@ -11,7 +11,7 @@ Status: implemented
 
 两者都违反根站立命令「never silently skip a missing referent」，只是违反点落在文档层与分发层，而不是代码层。这一类已经复发两次，正好到达本仓库把软约定提升为门禁的阈值。
 
-由 inbox spark [doc-reference-integrity-not-gated](../../../inbox/2026-09-15-doc-reference-integrity-not-gated.md) 升格而来；触发它的走查是「AI 工程化能力」复盘的缺口 9 与缺口 10——该复盘已移出仓库，是 `.agents/learning/private/` 下的机器本地学习笔记。
+由 inbox spark「doc-reference-integrity-not-gated」升格而来（该 spark 文件已从 inbox 清除）；触发它的走查是「AI 工程化能力」复盘的缺口 9 与缺口 10——该复盘已移出仓库，是 `.agents/learning/private/` 下的机器本地学习笔记。
 
 ## Decision
 

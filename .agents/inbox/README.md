@@ -64,12 +64,12 @@ Every capture, promotion, or dismissal updates the entry file and its `QUEUE.md`
 1. Create `yyyy-mm-dd-slug.md` with `Status: open`, a `Type:` line (`feature` or `bug`), and a few sentences under `## Spark`.
 2. Prepend `- [ ] [<type>] [title](./yyyy-mm-dd-slug.md)` to `QUEUE.md` (newest first).
 
-Or use the installed skills (kit-authored skills live flat under `.agents/skills/`):
+Or use the installed skills (adlc-authored skills live flat under `.agents/skills/`):
 
 | Skill | Purpose |
 |---|---|
-| [kit-inbox-capture](../skills/kit-inbox-capture/SKILL.md) | Given just the body (optional title / slug / notes / type): writes the spark (type resolved, never silently defaulted) and updates `QUEUE.md` |
-| [kit-inbox-promote](../skills/kit-inbox-promote/SKILL.md) | Explicitly promotes one `open` spark to a `proposed/` Agent Note — class derived from its type unless one is given — and updates status and queue |
+| [adlc-inbox-capture](../skills/adlc-inbox-capture/SKILL.md) | Given just the body (optional title / slug / notes / type): writes the spark (type resolved, never silently defaulted) and updates `QUEUE.md` |
+| [adlc-inbox-promote](../skills/adlc-inbox-promote/SKILL.md) | Explicitly promotes one `open` spark to a `proposed/` Agent Note — class derived from its type unless one is given — and updates status and queue |
 
 Capture never promotes; promotion requires an explicit promote request in the turn.
 
