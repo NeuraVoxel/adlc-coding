@@ -57,6 +57,8 @@ Type: feature
 - Each row carries the entry's type as a tag before the link: `- [ ] [feature] [title](./yyyy-mm-dd-slug.md)`.
 - Order: newest capture first.
 
+The board is the `# Inbox queue` heading and its rows — no legend, no empty-state note; this README is the board's only authority, so a fact lives here and never in the file. No `[ ]` row means the queue is empty.
+
 Every capture, promotion, or dismissal updates the entry file and its `QUEUE.md` row in the same change. On disagreement the entry's `Status` wins; fix the row.
 
 ## Capture

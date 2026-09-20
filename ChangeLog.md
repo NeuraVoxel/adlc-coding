@@ -18,6 +18,10 @@ Notable changes to this repository are listed here by released semver. The versi
 - `dev:server`, `dev:web`, and `build` scripts, the `web` vitest lane with its `jsdom` / Testing Library / `vite-tsconfig-paths` dependencies, the React oxlint plugins, and the `paths` mapping in `tsconfig.base.json`.
 - The installer's `--scope` identity: no scoped packages remain, so `new` renames the project name only.
 
+### Fixed
+
+- `.agents/inbox/QUEUE.md` is the `# Inbox queue` heading and its rows only: the shipped "Empty." paragraph is gone, so a capture's insert under the heading no longer sits under prose claiming the board is empty. An empty queue is a board with no `[ ]` row, and the inbox README pair is the board's only authority.
+
 ## [0.3.0] — 2026-09-15
 
 ### Added
