@@ -57,17 +57,18 @@ ID: Feat-0001
 
 - `[ ]` marks `open`.
 - `[x]` marks a departed entry (`promoted` or `discarded`); a promoted row links the Agent Note; a discarded row may carry a short reason.
-- Each row carries the entry's ID as a tag before the link: `- [ ] [Feat-0001] [title](./yyyy-mm-dd-slug.md)`. The tag carries the type too — `Feat-` is `feature`, `Bug-` is `bug` — so a sweep reads one kind by prefix.
-- Order: newest capture first.
+- Each row carries the entry's ID as a tag before the link: `- [ ] [Feat-0001] [title](./yyyy-mm-dd-slug.md)`. The tag carries the type too — `Feat-` is `feature`, `Bug-` is `bug`.
+- Rows are grouped by kind, `Feat` above `Bug`, each group under its own `## ` heading beneath `# Inbox queue`; a group with no rows is omitted.
+- Order: newest capture first **inside a group**. The board is no longer one chronological list, so row order says recency within a kind, not across kinds.
 
-The board is the `# Inbox queue` heading and its rows — no legend, no empty-state note; this README is the board's only authority, so a fact lives here and never in the file. No `[ ]` row means the queue is empty.
+The board is the `# Inbox queue` heading, its group headings, and its rows — no legend, no empty-state note; this README is the board's only authority, so a fact lives here and never in the file. No `[ ]` row means the queue is empty.
 
 Every capture, promotion, or dismissal updates the entry file and its `QUEUE.md` row in the same change. On disagreement the entry's `Status` wins; fix the row.
 
 ## Capture
 
 1. Create `yyyy-mm-dd-slug.md` with `Status: open`, a `Type:` line (`feature` or `bug`), an `ID:` line derived as that type's highest number in use plus one, and a few sentences under `## Spark`.
-2. Prepend `- [ ] [<id>] [title](./yyyy-mm-dd-slug.md)` to `QUEUE.md` (newest first).
+2. Prepend `- [ ] [<id>] [title](./yyyy-mm-dd-slug.md)` to `QUEUE.md`, as the first row of the group matching the type (`Feat` for `feature`, `Bug` for `bug`). Create the group heading when the group has no rows yet.
 
 Or use the installed skills (adlc-authored skills live flat under `.agents/skills/`):
 
@@ -81,7 +82,7 @@ Capture never promotes; promotion requires an explicit promote request in the tu
 
 ## Sweep the queue
 
-Open `QUEUE.md` and read only the `[ ]` rows; filter by the `Feat-` or `Bug-` prefix to sweep one kind. Open an entry file when more context helps. No mandated review cadence. [adlc-inbox-view](../skills/adlc-inbox-view/SKILL.md) renders the entries as tables grouped by type when you want the whole inbox, departed entries included, in one pass.
+Open `QUEUE.md` and read only the `[ ]` rows; sweeping one kind means reading that group and skipping the other. Open an entry file when more context helps. No mandated review cadence. [adlc-inbox-view](../skills/adlc-inbox-view/SKILL.md) renders the entries as tables grouped by type when you want the whole inbox, departed entries included, in one pass.
 
 ## Promote
 

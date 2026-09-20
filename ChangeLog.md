@@ -8,6 +8,10 @@ Notable changes to this repository are listed here by released semver. The versi
 
 - Inbox sparks carry a stable task ID: `Feat-0001` / `Bug-0001`, a per-type four-digit sequence derived as the highest number in use plus one, written on an `ID:` line in the spark and as the `QUEUE.md` row tag (replacing the type tag, since the prefix carries the type). `adlc-inbox-promote` takes an ID as its target (case-insensitive prefix, numeric digits, so `feat-1` resolves), and `adlc-inbox-view` gains an `ID` column. IDs never change and are never reused.
 
+### Changed
+
+- `QUEUE.md` groups its rows by kind: `## Feat` above `## Bug`, each under its own heading beneath `# Inbox queue`, newest-first inside a group and empty groups omitted. Row shape is unchanged, so a departed row still carries `[x]` and its Agent Note link; the board is no longer one chronological list, and the inbox README pair now says that recency is per-group. `adlc-inbox-capture` inserts into the group matching the type and `adlc-inbox-promote` flips a row in place.
+
 ### Fixed
 
 - The Chinese inbox README introduces the installed skills with the repository's own `adlc-` prefix, matching its English counterpart's `adlc-authored skills`; the 1.0.0 `kit-*` → `adlc-*` rename had left that one line behind. Generic uses of "kit" as this repository's common noun are untouched.

@@ -45,9 +45,11 @@ ID: <Feat|Bug>-NNNN
 <only when the user supplied notes; otherwise omit the whole section>
 ```
 
-5. Prepend to `QUEUE.md` (newest first), directly under the `# Inbox queue` heading, with the ID as the tag:
+5. Insert into `QUEUE.md`, with the ID as the tag: the new row goes first inside the group matching the type (`Feat` for `feature`, `Bug` for `bug`), under that group's `## ` heading; create the group heading when the group has no rows yet. `Feat` stays above `Bug`:
 
 ```markdown
+## Feat
+
 - [ ] [<id>] [<title>](./{date}-{slug}.md)
 ```
 

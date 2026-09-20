@@ -45,7 +45,7 @@ Status: proposed
 In `## Proposal` (or a nearby line), link back to the spark with a relative path, naming its ID in the link text (for example `[Feat-0001](../../../inbox/yyyy-mm-dd-slug.md)`) so the spark stays findable by number. Base the content on the spark (plus extras); expand it into a real proposal without inventing unstated product scope. `## Alternatives considered` needs at least one genuine alternative — from the user, implied by the spark, or an honest "defer / do nothing" with why it loses for now. The note follows the language policy for `.agents/notes/`: English primary with a `.zh.md` counterpart.
 
 5. Update the spark: `Status: promoted` and a clear link to the new Agent Note (both language files when a counterpart exists).
-6. Update the matching `QUEUE.md` row to `[x]` and append `→ [Agent Note](<relative path>)`; the ID tag stays.
+6. Update the matching `QUEUE.md` row to `[x]` and append `→ [Agent Note](<relative path>)`; the row stays in its group and the ID tag stays.
 7. Satisfy the notes README skeleton; the note-format gate rejects drifted sections once introduced.
 8. Report the spark path, the Agent Note path, and the QUEUE line. Do **not** commit unless the user asks. Do **not** implement the proposal.
 
