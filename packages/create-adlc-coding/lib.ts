@@ -39,6 +39,7 @@ export const COMPONENTS = {
     '.agents/learning/.gitignore',
     '.agents/skills/adlc-inbox-capture/SKILL.md',
     '.agents/skills/adlc-inbox-promote/SKILL.md',
+    '.agents/skills/adlc-inbox-view/SKILL.md',
     '.agents/skills/adlc-learning-note/SKILL.md',
     '.agents/skills/adlc-release/SKILL.md',
     'ChangeLog.md',

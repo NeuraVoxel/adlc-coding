@@ -6,6 +6,7 @@ Notable changes to this repository are listed here by released semver. The versi
 
 ### Added
 
+- `adlc-inbox-view` skill (`.agents/skills/adlc-inbox-view/SKILL.md`, shipped in the installer's `workflows` component): read-only, it renders every inbox spark as a Markdown table grouped by `Type` (`feature` / `bug`), newest first, with a `Status` column.
 - Inbox sparks carry a `Type` axis (`feature` / `bug`) below `Status`, and `QUEUE.md` rows carry it as a tag; promotion derives the Agent Note class from it (`feature` → `feature/`, `bug` → `bug-fix/`). The type stays a documented convention — the inbox is still outside every format gate.
 
 ### Changed

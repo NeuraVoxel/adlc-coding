@@ -72,12 +72,13 @@ Or use the installed skills (adlc-authored skills live flat under `.agents/skill
 |---|---|
 | [adlc-inbox-capture](../skills/adlc-inbox-capture/SKILL.md) | Given just the body (optional title / slug / notes / type): writes the spark (type resolved, never silently defaulted) and updates `QUEUE.md` |
 | [adlc-inbox-promote](../skills/adlc-inbox-promote/SKILL.md) | Explicitly promotes one `open` spark to a `proposed/` Agent Note — class derived from its type unless one is given — and updates status and queue |
+| [adlc-inbox-view](../skills/adlc-inbox-view/SKILL.md) | Read-only: renders every spark as Markdown tables grouped by type (`feature` / `bug`), newest first, with a `Status` column |
 
 Capture never promotes; promotion requires an explicit promote request in the turn.
 
 ## Sweep the queue
 
-Open `QUEUE.md` and read only the `[ ]` rows; filter by the `[feature]` or `[bug]` tag to sweep one kind. Open an entry file when more context helps. No mandated review cadence.
+Open `QUEUE.md` and read only the `[ ]` rows; filter by the `[feature]` or `[bug]` tag to sweep one kind. Open an entry file when more context helps. No mandated review cadence. [adlc-inbox-view](../skills/adlc-inbox-view/SKILL.md) renders the entries as tables grouped by type when you want the whole inbox, departed entries included, in one pass.
 
 ## Promote
 

@@ -72,12 +72,13 @@ Type: feature
 |---|---|
 | [adlc-inbox-capture](../skills/adlc-inbox-capture/SKILL.md) | 只需主体（可选标题 / slug / Notes / type）：写 spark（类型须落定，不得静默缺省）并更新 `QUEUE.md` |
 | [adlc-inbox-promote](../skills/adlc-inbox-promote/SKILL.md) | 明确升格某条 `open` spark 为 `proposed/` Agent Note——class 由类型推导，除非显式给定——并改状态与队列 |
+| [adlc-inbox-view](../skills/adlc-inbox-view/SKILL.md) | 只读：把全部 spark 渲染成按类型（`feature` / `bug`）分组的表格，新 → 旧，带 `Status` 列 |
 
 捕获不升格；升格须当轮明确提出。
 
 ## 扫队列
 
-打开 `QUEUE.md`，只看 `[ ]` 行；可按 `[feature]` / `[bug]` 标签只扫一类。需要更多上下文再点开条目文件。不强制回顾节奏。
+打开 `QUEUE.md`，只看 `[ ]` 行；可按 `[feature]` / `[bug]` 标签只扫一类。需要更多上下文再点开条目文件。不强制回顾节奏。想一眼看全整个 inbox（含已离队条目）时，用 [adlc-inbox-view](../skills/adlc-inbox-view/SKILL.md) 渲染成按类型分组的表格。
 
 ## 升格
 
