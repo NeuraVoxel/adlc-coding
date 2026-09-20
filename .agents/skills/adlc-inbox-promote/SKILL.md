@@ -1,16 +1,16 @@
 ---
-name: kit-inbox-promote
+name: adlc-inbox-promote
 description: >-
   Promotes an open `.agents/inbox/` spark into a formal `proposed/` Agent Note
   with bidirectional links and a QUEUE.md checkbox update. Use only when the
   user explicitly asks to 升格 / promote an inbox item, or says
-  kit-inbox-promote. Part of the kit-* skill family under `.agents/skills/`.
+  adlc-inbox-promote. Part of the adlc-* skill family under `.agents/skills/`.
   Do not use for capture-only requests.
 ---
 
 # Inbox Promote
 
-Promote one open spark to `proposed/`. Contract authority: the [inbox README](../../inbox/README.md) and the [Agent Notes README](../../notes/README.md). Sibling: [kit-inbox-capture](../kit-inbox-capture/SKILL.md). This skill is guidance, not a second contract.
+Promote one open spark to `proposed/`. Contract authority: the [inbox README](../../inbox/README.md) and the [Agent Notes README](../../notes/README.md). Sibling: [adlc-inbox-capture](../adlc-inbox-capture/SKILL.md). This skill is guidance, not a second contract.
 
 ## Inputs
 

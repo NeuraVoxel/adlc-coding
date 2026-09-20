@@ -100,7 +100,7 @@ async function ensureClaudeSymlink(dir: string): Promise<void> {
  * Recreate `.codebuddy/skills` as a relative alias to `.agents/skills`.
  *
  * CodeBuddy Code discovers project skills only under `.codebuddy/skills/`, so
- * without the alias the `kit-*` skills this kit ships stay invisible to it.
+ * without the alias the `adlc-*` skills this kit ships stay invisible to it.
  * The alias is recreated rather than trusted from the copy, for the same reason
  * as `CLAUDE.md`: a materialized symlink points back at the source checkout.
  * A target without `.agents/skills` gets no alias — a dangling link is worse

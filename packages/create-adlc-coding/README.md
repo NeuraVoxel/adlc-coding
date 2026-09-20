@@ -19,7 +19,7 @@ pnpm run create -- adopt ../existing-app --only rules,gates,docs,workflows,ci
 | `rules` | `AGENTS.md`, `.agents/notes/README*.md` |
 | `gates` | `lefthook.yml`, `.oxlintrc.json`, `scripts/run-gates.*`, `scripts/verify-doc-pairing.*`, `scripts/agent-note-tree.*`, `scripts/verify-agent-note-format.*`, `scripts/verify-archived-agent-notes.*`, `scripts/verify-doc-references.*`, `scripts/archived-notes.manifest.json` |
 | `docs` | `docs/architecture*.md`, `docs/testing*.md` |
-| `workflows` | inbox and learning contracts, the `kit-*` skills, `ChangeLog.md`, `docs/release*` |
+| `workflows` | inbox and learning contracts, the `adlc-*` skills, `ChangeLog.md`, `docs/release*` |
 | `ci` | `.github/workflows/ci.yml` |
 
 `new` copies everything except `.git`, `node_modules`, `dist`, `coverage`, the lockfile, and this installer package, renames `adlc-coding` to `--name` across text surfaces, recreates the `CLAUDE.md` alias and the `.codebuddy/skills` alias to `.agents/skills`, and initializes the git repository the postinstall hook requires.

@@ -8,6 +8,10 @@ Notable changes to this repository are listed here by released semver. The versi
 
 - Inbox sparks carry a `Type` axis (`feature` / `bug`) below `Status`, and `QUEUE.md` rows carry it as a tag; promotion derives the Agent Note class from it (`feature` → `feature/`, `bug` → `bug-fix/`). The type stays a documented convention — the inbox is still outside every format gate.
 
+### Changed
+
+- The workflow skills are renamed to the repository's own prefix: `kit-inbox-capture`, `kit-inbox-promote`, `kit-learning-note`, and `kit-release` become `adlc-inbox-capture`, `adlc-inbox-promote`, `adlc-learning-note`, and `adlc-release`. Paths, skill `name:` fields, the installer's `workflows` component, and every link follow the rename.
+
 ### Removed
 
 - The application faces: `server/` (Fastify), `apps/web/` (React + Vite), and the `packages/contracts/` seam. The kit now ships the AI work-paradigm and workflow rule system only — no application code and no cross-language contract package; a stack adopts the rules with `adopt` and keeps its own root, typecheck program, and lanes.

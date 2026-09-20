@@ -11,7 +11,7 @@ adlc-coding is the AI work-paradigm and workflow kit of the adlc-coding series: 
 | `packages/create-adlc-coding/` | The installer: scaffolds a new project from this checkout or adopts rule components into an existing one; the checkout is the template |
 | `scripts/` | The `run-gates.ts` orchestrator and verify scripts; language-agnostic infrastructure that never imports business code |
 | `docs/` | The architecture map (this file), the [testing strategy](testing.md), and the [release contract](release.md) |
-| `.agents/` | Decision records (`notes/`), the spark inbox and learning retrospectives, and the `kit-*` workflow skills |
+| `.agents/` | Decision records (`notes/`), the spark inbox and learning retrospectives, and the `adlc-*` workflow skills |
 
 ## Language policy
 

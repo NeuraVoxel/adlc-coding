@@ -4,7 +4,7 @@ Status: implemented
 
 ## Problem
 
-`kit-*` 工作流技能住在 `.agents/skills/<name>/SKILL.md`：一棵树、一个家园，被所有读取本仓库的 agent 工具共享。而 CodeBuddy Code 只在 `.codebuddy/skills/<name>/SKILL.md` 下发现项目技能，因此在本仓库里它一个技能都没加载到——技能存在，`AGENTS.md` 与 README 对照档也写了它们，却在真正驱动本 kit 的工具里不可达。桥接方式不能移动技能、也不能复制内容：两者都会给同一批事实第二个家园，并破坏安装器的 `workflows` 组件。
+`adlc-*` 工作流技能住在 `.agents/skills/<name>/SKILL.md`：一棵树、一个家园，被所有读取本仓库的 agent 工具共享。而 CodeBuddy Code 只在 `.codebuddy/skills/<name>/SKILL.md` 下发现项目技能，因此在本仓库里它一个技能都没加载到——技能存在，`AGENTS.md` 与 README 对照档也写了它们，却在真正驱动本 kit 的工具里不可达。桥接方式不能移动技能、也不能复制内容：两者都会给同一批事实第二个家园，并破坏安装器的 `workflows` 组件。
 
 ## Decision
 
@@ -20,4 +20,4 @@ Status: implemented
 
 ## Consequences
 
-CodeBuddy Code 现在列出四个 `kit-*` 技能，而技能撰写方式不变。随之而来两条义务：新技能只放进 `.agents/skills/`——别名会自动覆盖它，而在 `.codebuddy/` 下新增真实文件等于第二个家园，且会被别名遮蔽；凡是改动安装器处理符号链接方式的地方，都要继续重建这个别名，与约束 `CLAUDE.md` 的相对链接规则一致。在不支持符号链接的环境里，安装器退化为复制整棵树，此后新增的技能不再被跟踪：这是回退方案的已知代价，而非别名的代价。
+CodeBuddy Code 现在列出四个 `adlc-*` 技能，而技能撰写方式不变。随之而来两条义务：新技能只放进 `.agents/skills/`——别名会自动覆盖它，而在 `.codebuddy/` 下新增真实文件等于第二个家园，且会被别名遮蔽；凡是改动安装器处理符号链接方式的地方，都要继续重建这个别名，与约束 `CLAUDE.md` 的相对链接规则一致。在不支持符号链接的环境里，安装器退化为复制整棵树，此后新增的技能不再被跟踪：这是回退方案的已知代价，而非别名的代价。

@@ -1,5 +1,5 @@
 ---
-name: kit-release
+name: adlc-release
 description: >-
   Cuts a release of this repository when the user says 发版 / release / cut a
   version: bump the version in the authority, promote the ChangeLog Unreleased

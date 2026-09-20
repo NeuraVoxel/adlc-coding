@@ -10,7 +10,7 @@ inbox 原来只有一条轴 `Status`，扫队列只能回答「还开着吗」�
 
 每条 inbox spark 增加第二条头部轴 `Type`，取值封闭：`feature`（尚不存在的东西——新能力、新契约、新流程，或对既有者的改进）与 `bug`（已经错了的东西——缺陷、漂移，或对本仓库既有契约的违反）。它写在 spark 文件里 `Status` 的正下方，并在 [`QUEUE.md`](../../../inbox/QUEUE.md) 每行链接前以标签呈现（`- [ ] [feature] [标题](./yyyy-mm-dd-slug.md)`）。类型捕获一次即定，不随 status 变化：升格与丢弃后仍保留捕获时的类型。
 
-升格由类型推导 Agent Note 的 class：`feature` → `notes/proposed/feature/`，`bug` → `notes/proposed/bug-fix/`。明确指定的 class 优先；类型缺失或含糊时提问一次，不猜。两个 [inbox 技能](../../../skills/kit-inbox-capture/SKILL.md)遵循同一规则：capture 负责把类型落定而非静默缺省，promote 负责映射而非从头再问。
+升格由类型推导 Agent Note 的 class：`feature` → `notes/proposed/feature/`，`bug` → `notes/proposed/bug-fix/`。明确指定的 class 优先；类型缺失或含糊时提问一次，不猜。两个 [inbox 技能](../../../skills/adlc-inbox-capture/SKILL.md)遵循同一规则：capture 负责把类型落定而非静默缺省，promote 负责映射而非从头再问。
 
 类型是约定，不是门禁：inbox 仍在一切 format gate 之外，[inbox README](../../../inbox/README.md) 是它唯一的权威。
 

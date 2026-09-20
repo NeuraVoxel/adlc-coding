@@ -10,7 +10,7 @@ The inbox had one axis, `Status`, so a queue sweep could only answer "is it stil
 
 Every inbox spark carries a second header axis, `Type`, with a closed set: `feature` (something that does not exist yet — new capability, contract, or process, or an improvement to one) and `bug` (something already wrong — a defect, a drift, or a violation of a contract this repository already states). It sits directly below `Status` in the spark file, and each [`QUEUE.md`](../../../inbox/QUEUE.md) row carries it as a tag before the link (`- [ ] [feature] [title](./yyyy-mm-dd-slug.md)`). Type is captured once and never changes with status: promotion and dismissal keep the type the spark was captured with.
 
-Promotion derives the Agent Note class from the type: `feature` → `notes/proposed/feature/`, `bug` → `notes/proposed/bug-fix/`. An explicitly requested class wins; a missing or ambiguous type is one clarifying question, never a guess. The two [inbox skills](../../../skills/kit-inbox-capture/SKILL.md) follow the same rule — capture resolves the type instead of silently defaulting it, promote maps it instead of re-asking from scratch.
+Promotion derives the Agent Note class from the type: `feature` → `notes/proposed/feature/`, `bug` → `notes/proposed/bug-fix/`. An explicitly requested class wins; a missing or ambiguous type is one clarifying question, never a guess. The two [inbox skills](../../../skills/adlc-inbox-capture/SKILL.md) follow the same rule — capture resolves the type instead of silently defaulting it, promote maps it instead of re-asking from scratch.
 
 The type is a convention, not a gate: the inbox stays outside every format gate, so the [inbox README](../../../inbox/README.md) is its only authority.
 

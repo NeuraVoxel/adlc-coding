@@ -2,7 +2,7 @@
 
 English | [中文](release.zh.md)
 
-A release is an explicit cut, never a side effect of development. The maintainer asks for it (发版 / release); the [kit-release skill](../.agents/skills/kit-release/SKILL.md) is the operating procedure, and this document is the contract that procedure defers to.
+A release is an explicit cut, never a side effect of development. The maintainer asks for it (发版 / release); the [adlc-release skill](../.agents/skills/adlc-release/SKILL.md) is the operating procedure, and this document is the contract that procedure defers to.
 
 ## Authority
 

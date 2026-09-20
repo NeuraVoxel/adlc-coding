@@ -11,8 +11,8 @@ The kit lacked the capture and release workflows ai-eng-kit has already proven: 
 Migrate the four features adapted to this repository's conventions, not copied:
 
 - The inbox and learning contracts are English-primary with `.zh.md` counterparts and join the pairing gate through an enumerated root-file list; sparks, `QUEUE.md` rows, and learning notes stay ungated, single-language user content, exactly as in the source kit.
-- Skills live flat under `.agents/skills/` (`<name>/SKILL.md`, English-only like `AGENTS.md`). The source kit's dual `skills/` + `.agents/skills/` layout existed for npm distribution, which this kit does not have — the installer is the distribution, so a single live copy removes the drift surface. Four skills migrate: `kit-inbox-capture`, `kit-inbox-promote`, `kit-learning-note`, `kit-release`.
-- The `ai-eng` CLI dependency is gone: `kit-inbox-promote` references the notes README skeleton instead of `verify-notes`, and `kit-release` runs `pnpm run check:all` against this repo's own gates.
+- Skills live flat under `.agents/skills/` (`<name>/SKILL.md`, English-only like `AGENTS.md`). The source kit's dual `skills/` + `.agents/skills/` layout existed for npm distribution, which this kit does not have — the installer is the distribution, so a single live copy removes the drift surface. Four skills migrate: `adlc-inbox-capture`, `adlc-inbox-promote`, `adlc-learning-note`, `adlc-release`.
+- The `ai-eng` CLI dependency is gone: `adlc-inbox-promote` references the notes README skeleton instead of `verify-notes`, and `adlc-release` runs `pnpm run check:all` against this repo's own gates.
 - The release contract is `docs/release.md` (paired) plus `ChangeLog.md` with `## Unreleased` staging: development appends there, a cut renames the heading, bumps root `package.json`, rewrites next-cut attributions, and tags `v<version>`.
 - A `workflows` component in the installer distributes all of the above to scaffolded and adopting projects.
 

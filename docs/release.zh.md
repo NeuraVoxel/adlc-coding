@@ -2,7 +2,7 @@
 
 中文 | [English](release.md)
 
-发版是一次显式切割，绝不是开发的副作用。由维护者提出（发版 / release）；[kit-release 技能](../.agents/skills/kit-release/SKILL.md)是操作流程，本文是该流程服从的合同。
+发版是一次显式切割，绝不是开发的副作用。由维护者提出（发版 / release）；[adlc-release 技能](../.agents/skills/adlc-release/SKILL.md)是操作流程，本文是该流程服从的合同。
 
 ## 权威
 

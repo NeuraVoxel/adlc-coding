@@ -11,7 +11,7 @@ adlc-coding 是 adlc-coding 系列中面向 AI 工作范式与工作流的 kit�
 | `packages/create-adlc-coding/` | 安装器：从本 checkout 脚手架新项目，或把规则组件采纳进既有项目；checkout 即模板 |
 | `scripts/` | `run-gates.ts` 门禁编排与 verify 脚本；语言无关的基础设施，不 import 业务代码 |
 | `docs/` | 架构地图（本文）、[测试策略](testing.zh.md)与[发版合同](release.zh.md) |
-| `.agents/` | 决策记录（`notes/`）、灵感 inbox 与学习复盘、以及 `kit-*` 工作流技能 |
+| `.agents/` | 决策记录（`notes/`）、灵感 inbox 与学习复盘、以及 `adlc-*` 工作流技能 |
 
 ## 语言策略
 

@@ -11,8 +11,8 @@ Status: implemented
 按本仓规范迁移这四个功能，而不是复制：
 
 - inbox 与 learning 合同以英文为主档配 `.zh.md` 对照，通过枚举的根文件清单进入配对门禁；spark、`QUEUE.md` 行与学习笔记保持不设门禁的单语用户内容，与源仓一致。
-- 技能平铺在 `.agents/skills/` 下（`<name>/SKILL.md`，与 `AGENTS.md` 一样纯英文）。源仓 `skills/` + `.agents/skills/` 双份布局是为 npm 分发服务的，本 kit 没有 npm 发布面——安装器就是分发渠道，单一实时副本消灭了漂移面。迁移四个技能：`kit-inbox-capture`、`kit-inbox-promote`、`kit-learning-note`、`kit-release`。
-- 去掉 `ai-eng` CLI 依赖：`kit-inbox-promote` 引用 notes README 骨架而非 `verify-notes`；`kit-release` 跑本仓自己的 `pnpm run check:all`。
+- 技能平铺在 `.agents/skills/` 下（`<name>/SKILL.md`，与 `AGENTS.md` 一样纯英文）。源仓 `skills/` + `.agents/skills/` 双份布局是为 npm 分发服务的，本 kit 没有 npm 发布面——安装器就是分发渠道，单一实时副本消灭了漂移面。迁移四个技能：`adlc-inbox-capture`、`adlc-inbox-promote`、`adlc-learning-note`、`adlc-release`。
+- 去掉 `ai-eng` CLI 依赖：`adlc-inbox-promote` 引用 notes README 骨架而非 `verify-notes`；`adlc-release` 跑本仓自己的 `pnpm run check:all`。
 - 发版合同是 `docs/release.md`（配对）加带 `## Unreleased` 暂存的 `ChangeLog.md`：开发内容累积其中，切割时重命名标题、bump 根 `package.json`、改写 next-cut 署名、打 tag `v<version>`。
 - 安装器新增 `workflows` 组件，把以上全部分发给脚手架与采纳项目。
 

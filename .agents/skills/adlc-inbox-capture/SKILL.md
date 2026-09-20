@@ -1,16 +1,16 @@
 ---
-name: kit-inbox-capture
+name: adlc-inbox-capture
 description: >-
   Captures an uncommitted inspiration into `.agents/inbox/` (spark file plus
   QUEUE.md checkbox). Use when the user wants to record a spark or idea, says
-  kit-inbox-capture / 记到 inbox / 记灵感, or gives only a spark body and asks to
-  queue it without promoting to an Agent Note. Part of the kit-* skill family
-  under `.agents/skills/`. For learning retrospectives use kit-learning-note.
+  adlc-inbox-capture / 记到 inbox / 记灵感, or gives only a spark body and asks to
+  queue it without promoting to an Agent Note. Part of the adlc-* skill family
+  under `.agents/skills/`. For learning retrospectives use adlc-learning-note.
 ---
 
 # Inbox Capture
 
-Record one spark. Contract authority: the [inbox README](../../inbox/README.md). Sibling: [kit-inbox-promote](../kit-inbox-promote/SKILL.md). This skill is guidance, not a second contract.
+Record one spark. Contract authority: the [inbox README](../../inbox/README.md). Sibling: [adlc-inbox-promote](../adlc-inbox-promote/SKILL.md). This skill is guidance, not a second contract.
 
 ## Inputs
 

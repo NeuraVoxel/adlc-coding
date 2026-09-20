@@ -4,7 +4,7 @@ Status: implemented
 
 ## Problem
 
-The `kit-*` workflow skills live in `.agents/skills/<name>/SKILL.md`: one tree, one home, shared by every agent tool that reads this repository. CodeBuddy Code discovers project skills only under `.codebuddy/skills/<name>/SKILL.md`, so on this checkout it loaded none of them — the skills existed, were documented in `AGENTS.md` and the README pair, and were unreachable in the tool this kit is actually driven from. The bridge cannot move the skills or copy their content: both would give the same facts a second home and break the installer's `workflows` component.
+The `adlc-*` workflow skills live in `.agents/skills/<name>/SKILL.md`: one tree, one home, shared by every agent tool that reads this repository. CodeBuddy Code discovers project skills only under `.codebuddy/skills/<name>/SKILL.md`, so on this checkout it loaded none of them — the skills existed, were documented in `AGENTS.md` and the README pair, and were unreachable in the tool this kit is actually driven from. The bridge cannot move the skills or copy their content: both would give the same facts a second home and break the installer's `workflows` component.
 
 ## Decision
 
@@ -20,4 +20,4 @@ The `kit-*` workflow skills live in `.agents/skills/<name>/SKILL.md`: one tree, 
 
 ## Consequences
 
-CodeBuddy Code lists the four `kit-*` skills and skill authoring is unchanged. Two obligations follow. New skills go under `.agents/skills/` — the alias picks them up, and a real file added under `.codebuddy/` would be a second home that the alias then shadows. Any change to how the installer handles symlinks must keep recreating this alias, under the same relative-link rule that governs `CLAUDE.md`. Where symlinks are unavailable the installer falls back to a copied tree, which then stops tracking skills added later: a known cost of the fallback, not of the alias.
+CodeBuddy Code lists the four `adlc-*` skills and skill authoring is unchanged. Two obligations follow. New skills go under `.agents/skills/` — the alias picks them up, and a real file added under `.codebuddy/` would be a second home that the alias then shadows. Any change to how the installer handles symlinks must keep recreating this alias, under the same relative-link rule that governs `CLAUDE.md`. Where symlinks are unavailable the installer falls back to a copied tree, which then stops tracking skills added later: a known cost of the fallback, not of the alias.
