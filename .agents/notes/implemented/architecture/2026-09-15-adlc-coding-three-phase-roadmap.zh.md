@@ -1,20 +1,21 @@
-# Agent Note: adlc-coding three-phase roadmap and cross-stack adoption rule
+# Agent Note: rule-only kit and the cross-stack adoption rule
 
 Status: implemented
 
 ## Problem
 
-adlc-coding 系列要覆盖 TypeScript 单栈、Python 单栈与混合三种形态。如果一次性搭建全栈骨架，未经验证的接缝会被固化进模板，而且每接入一种新技术栈都要改动全部 kit 的骨架。
+本 kit 的价值在于 AI 工作范式与工作流的规则体系，而不是一个示例应用。携带 Fastify server、React + Vite 前端与 `packages/contracts/` 接缝，会让每个采用者先删掉一批栈相关代码才能开工；它还把系列框定为「每种语言一套完整 kit」——这种框定会按栈把整套骨架复制三份，并把跨栈机制（契约生成、双端 same-PR）放在一个没有第二个栈可供验证的仓库里。
 
 ## Decision
 
-按三阶段建 kit：`adlc-coding`（TS 前后端单栈）→ `adlc-coding-py`（Python 单栈）→ `adlc-coding`（TS+Python 集成形态）。`adlc-coding` 不是第三个从零建的 kit：它由前两个 kit 的内容加上 `packages/contracts/` 与 `ci-contracts`、`ci-e2e` 两条泳道组成。跨栈共享物只允许两种形态：契约 schema 与提交在 git 里的 fixtures（双端离线回放）；活进程验证只存在于 e2e 泳道。接入规则已写入各 kit 根 AGENTS.md：新技术栈先建独立语言根 + 独立泳道并全绿，然后才建跨栈接缝。
+本仓库只交付规则：没有应用代码，没有按栈划分的编译面，也没有跨语言契约包。某个技术栈住在自己的仓库里，拥有自己的 typecheck 程序与泳道，通过 `adopt` 取走规则集，并在出现任何跨栈产物之前先跑绿。跨栈共享产物只有两种形态：按语言生成的 schema（禁止手写另一个栈的类型副本；生成物新鲜度由 gen/verify 成对门禁守护）与提交在 git 里、双端离线回放的 fixtures。活进程集成验证属于拥有被测进程的那个仓库。TypeScript 只是门禁脚本与安装器的实现语言，不代表采用方的栈。
 
 ## Alternatives considered
 
-- **一步到位搭建全栈骨架**。落败原因：接缝机制（生成物、双端 same-PR、e2e）在单栈独立验证之前没有可运行的对照面，返工成本会落在每一步；初始复杂度还会推迟第一步的可用时间。
-- **单一 monorepo 按阶段演化同一个仓库**。落败原因：三个 kit 是独立可采用的模板产品；单仓演化会让采用者背上他们用不到的另外两个栈的门禁与依赖，违背 kit 的独立验证目标。
+- **保留 TypeScript 编译面作为参考实现**。落败原因：每个采用者都要先删掉它们；一份示例面还会诱使 agent 在这里重建业务代码——kit 的边界变得含糊，编译面也会漂离门禁真正验证的东西。
+- **每种栈组合一个集成仓库**。落败原因：规则体系本身是可独立采纳的；单仓演化会让采用者背上用不到的其他栈的门禁与依赖。
+- **保留 `packages/contracts/` 作为跨栈生成物的未来家园**。落败原因：只有一个栈时没有可生成的对象，它的双端同 PR 规则也没有第二个端——空接缝是本仓库无法验证的承诺。
 
 ## Consequences
 
-共享骨架（run-gates、lefthook、AGENTS.md 模板、notes 体系）以 `adlc-coding` 为参考实现，其余 kit 从它派生；三份拷贝允许各自演化，kit 发布打 tag 时同步一次。代价是骨架的短期三份重复——未来若引入克隆检测门禁，需把 `scripts/` 纳入豁免或先建派生同步机制。收益是每一阶段都有全绿门禁作为下一阶段的出发点和回归基线。
+kit 变得更小且语言无关：`adopt` 是主路径，`new` 脚手架出的是纯规则项目，门禁图覆盖的是工具自身（`scripts/` 与安装器）。代价是仓库内没有「某个栈如何接泳道」的参考，这段 guidance 只能写成散文、落到采用者自己的 note 里；身份改名也只剩一个项目名，因为不再有 scope 包。收益是每一次采纳都从全绿门禁出发，并把它变成采用者自己的回归基线，且没有采用者需要继承一批必须删除的代码。

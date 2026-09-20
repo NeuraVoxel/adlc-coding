@@ -60,30 +60,29 @@ describe('isRenamable', () => {
 })
 
 describe('applyRenames', () => {
-  it('replaces the scope before the bare kit name', () => {
+  it('replaces the kit name across text surfaces', () => {
     const renamed = applyRenames(
-      '"name": "adlc-coding", imports "@adlc-coding/contracts" and "@adlc-coding/*"',
-      { name: 'my-app', scope: '@myco' },
+      '"name": "adlc-coding", see [the docs](docs/architecture.md) of adlc-coding',
+      { name: 'my-app' },
     )
     expect(renamed).toContain('"name": "my-app"')
-    expect(renamed).toContain('@myco/contracts')
-    expect(renamed).toContain('@myco/*')
+    expect(renamed).toContain('of my-app')
     expect(renamed).not.toContain('adlc-coding')
   })
 
   it('preserves markdown link targets, which are paths rather than prose', () => {
     const renamed = applyRenames(
       'See [the installer note](../../.agents/notes/implemented/process/2026-09-15-create-adlc-coding-installer.md) in adlc-coding.',
-      { name: 'my-app', scope: '@myco' },
+      { name: 'my-app' },
     )
     expect(renamed).toContain('2026-09-15-create-adlc-coding-installer.md')
     expect(renamed).toContain('in my-app.')
   })
 
   it('renames link text, which is prose', () => {
-    expect(
-      applyRenames('[adlc-coding docs](docs/architecture.md)', { name: 'my-app', scope: '@myco' }),
-    ).toBe('[my-app docs](docs/architecture.md)')
+    expect(applyRenames('[adlc-coding docs](docs/architecture.md)', { name: 'my-app' })).toBe(
+      '[my-app docs](docs/architecture.md)',
+    )
   })
 })
 

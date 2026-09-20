@@ -104,7 +104,7 @@ export const RUNNER_SCRIPTS: Readonly<Record<string, string>> = {
 }
 
 /** File suffixes that receive identity renames during a fresh scaffold. */
-const TEXT_SUFFIXES: readonly string[] = ['.md', '.json', '.ts', '.tsx', '.js', '.yaml', '.yml', '.html']
+const TEXT_SUFFIXES: readonly string[] = ['.md', '.json', '.ts', '.js', '.yaml', '.yml']
 
 /**
  * Resolve the component list from the `--only` argument.
@@ -149,17 +149,14 @@ export function isRenamable(relPosixPath: string): boolean {
   return TEXT_SUFFIXES.some(suffix => relPosixPath.endsWith(suffix))
 }
 
-/** The target identities a fresh scaffold renames the kit's placeholders to. */
+/** The target identity a fresh scaffold renames the kit's placeholder to. */
 export interface RenameIdentities {
   /** New root package/project name replacing `adlc-coding`. */
   name: string
-  /** New npm scope replacing `@adlc-coding/`. */
-  scope: string
 }
 
 /**
- * Apply the kit's placeholder identities to file content: scope first, then
- * the bare kit name.
+ * Apply the kit's placeholder identity to file content.
  *
  * Markdown link targets are repository paths, not prose. Renaming one would
  * break the reference, because a scaffold renames file *contents* and leaves
@@ -167,12 +164,11 @@ export interface RenameIdentities {
  * must keep pointing at the file that is actually on disk. Link text is prose
  * and is renamed.
  * @param content - file content.
- * @param identities - target name and scope.
+ * @param identities - target name.
  * @returns renamed content.
  */
 export function applyRenames(content: string, identities: RenameIdentities): string {
-  const renameProse = (text: string): string =>
-    text.replaceAll('@adlc-coding/', `${identities.scope}/`).replaceAll('adlc-coding', identities.name)
+  const renameProse = (text: string): string => text.replaceAll('adlc-coding', identities.name)
   let renamed = ''
   let cursor = 0
   for (const match of content.matchAll(/(!?\[[^\]]*\]\()([^)\s]+)(\))/g)) {

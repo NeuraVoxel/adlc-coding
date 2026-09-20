@@ -1,25 +1,8 @@
-import { defineConfig, defineProject } from 'vitest/config'
-import tsconfigPaths from 'vite-tsconfig-paths'
+import { defineConfig } from 'vitest/config'
 
 export default defineConfig({
-  plugins: [tsconfigPaths()],
   test: {
-    projects: [
-      defineProject({
-        test: {
-          name: 'node',
-          environment: 'node',
-          include: ['server/tests/**/*.spec.ts', 'scripts/**/*.spec.ts', 'packages/create-adlc-coding/tests/**/*.spec.ts'],
-        },
-      }),
-      defineProject({
-        esbuild: { jsx: 'automatic' },
-        test: {
-          name: 'web',
-          environment: 'jsdom',
-          include: ['apps/web/tests/**/*.spec.tsx'],
-        },
-      }),
-    ],
+    environment: 'node',
+    include: ['scripts/**/*.spec.ts', 'packages/create-adlc-coding/tests/**/*.spec.ts'],
   },
 })

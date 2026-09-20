@@ -29,7 +29,7 @@ const toPosix = (path: string): string => path.split('\\').join('/')
 
 function usage(): never {
   console.error(`Usage:
-  pnpm run create -- new <dir> [--scope <scope>] [--name <name>]
+  pnpm run create -- new <dir> [--name <name>]
   pnpm run create -- adopt [dir] [--only rules,gates,docs,workflows,ci] [--force]`)
   process.exit(2)
 }
@@ -135,7 +135,7 @@ async function ensureCodebuddySkillsAlias(dir: string): Promise<void> {
  * paths the copy excluded. Files keep their names; only content changes.
  * @param root - the copied tree's root, for repo-relative link resolution.
  * @param dir - the directory being walked.
- * @param identities - target name and scope.
+ * @param identities - target project name.
  */
 async function renameTree(root: string, dir: string, identities: RenameIdentities): Promise<void> {
   for (const entry of await readdir(dir, { withFileTypes: true })) {
@@ -177,7 +177,7 @@ async function runNew(target: string, identities: RenameIdentities): Promise<voi
   if (gitInit.status !== 0) {
     console.log('create-adlc-coding: git unavailable — run `git init` before pnpm install.')
   }
-  console.log(`create-adlc-coding: scaffolded ${identities.name} (scope ${identities.scope}) at ${targetRoot}.`)
+  console.log(`create-adlc-coding: scaffolded ${identities.name} at ${targetRoot}.`)
   console.log('Next steps:')
   console.log(`  cd ${relative(process.cwd(), targetRoot) || '.'}`)
   console.log('  pnpm install')
@@ -232,7 +232,7 @@ async function runAdopt(
   if (components.includes('gates')) await mergePackageScripts(targetRoot)
   console.log(`create-adlc-coding: installed components [${components.join(', ')}] into ${targetRoot}.`)
   console.log('Next steps:')
-  console.log('  pnpm add -D typescript tsx vitest oxlint lefthook vite-tsconfig-paths jsdom @types/node')
+  console.log('  pnpm add -D typescript tsx vitest oxlint lefthook @types/node')
   console.log('  add "postinstall": "lefthook install" to package.json scripts')
   console.log('  provide lint / typecheck / test scripts — the gate graph invokes them')
   console.log('  prune framework-specific lines from AGENTS.md and docs/*.md; keep .zh.md counterparts in sync')
@@ -246,7 +246,6 @@ try {
     if (dir === undefined) usage()
     await runNew(dir, {
       name: requireString(flags, 'name', basename(dir)),
-      scope: requireString(flags, 'scope', '@adlc-coding'),
     })
   } else {
     await runAdopt(positional[0] ?? '.', {

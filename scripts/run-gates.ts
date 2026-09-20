@@ -61,7 +61,7 @@ export function gatesForMode(mode: Mode): Gate[] {
     case 'ci-primary':
       return [
         { id: 'lint', label: 'oxlint', command: ['pnpm', 'run', 'lint'] },
-        { id: 'typecheck', label: 'tsc --noEmit across faces', command: ['pnpm', 'run', 'typecheck'] },
+        { id: 'typecheck', label: 'tsc --noEmit (tools and packages)', command: ['pnpm', 'run', 'typecheck'] },
         { id: 'test', label: 'vitest run', command: ['pnpm', 'run', 'test'] },
       ]
     case 'doc-sync':

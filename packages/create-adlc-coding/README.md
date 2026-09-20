@@ -6,7 +6,7 @@ Zero-dependency installer for the adlc-coding rule set. The checkout is the temp
 
 ```sh
 # Scaffold a fresh project: full copy, identities renamed, hooks wired
-pnpm run create -- new ../my-app --scope @myco --name my-app
+pnpm run create -- new ../my-app --name my-app
 
 # Adopt only the verified rules into an existing project
 pnpm run create -- adopt ../existing-app --only rules,gates,docs,workflows,ci
@@ -22,7 +22,7 @@ pnpm run create -- adopt ../existing-app --only rules,gates,docs,workflows,ci
 | `workflows` | inbox and learning contracts, the `kit-*` skills, `ChangeLog.md`, `docs/release*` |
 | `ci` | `.github/workflows/ci.yml` |
 
-`new` copies everything except `.git`, `node_modules`, `dist`, `coverage`, the lockfile, and this installer package, renames `@adlc-coding/*` and `adlc-coding` to `--scope`/`--name` across text surfaces, recreates the `CLAUDE.md` alias and the `.codebuddy/skills` alias to `.agents/skills`, and initializes the git repository the postinstall hook requires.
+`new` copies everything except `.git`, `node_modules`, `dist`, `coverage`, the lockfile, and this installer package, renames `adlc-coding` to `--name` across text surfaces, recreates the `CLAUDE.md` alias and the `.codebuddy/skills` alias to `.agents/skills`, and initializes the git repository the postinstall hook requires.
 
 `adopt` never overwrites an existing file without `--force`; it merges the missing runner scripts into the target `package.json` only when the `gates` component is installed, and prints the dev-dependency and script prerequisites the gate graph assumes. It recreates the same two aliases afterwards: `CLAUDE.md` always, and `.codebuddy/skills` when the target has `.agents/skills` (an existing non-symlink `.codebuddy/skills` is left untouched).
 

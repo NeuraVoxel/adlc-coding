@@ -9,10 +9,7 @@
     "node": ">=22"
   },
   "scripts": {
-    "dev:server": "pnpm --filter @adlc-coding/server dev",
-    "dev:web": "pnpm --filter @adlc-coding/web dev",
-    "build": "pnpm --filter @adlc-coding/web run build",
-    "typecheck": "tsc --noEmit -p packages/contracts && tsc --noEmit -p server && tsc --noEmit -p apps/web && tsc --noEmit -p tsconfig.tools.json",
+    "typecheck": "tsc --noEmit -p tsconfig.tools.json",
     "lint": "oxlint .",
     "lint:fix": "oxlint . --fix",
     "test": "vitest run",
@@ -24,14 +21,11 @@
     "postinstall": "lefthook install"
   },
   "devDependencies": {
-    "@testing-library/react": "^16.3.2",
     "@types/node": "^22.20.0",
-    "jsdom": "^29.0.0",
     "lefthook": "^2.1.9",
     "oxlint": "1.76.0",
     "tsx": "^4.22.4",
     "typescript": "^6.0.3",
-    "vite-tsconfig-paths": "^6.1.1",
     "vitest": "^4.1.8"
   }
 }

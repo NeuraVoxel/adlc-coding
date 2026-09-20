@@ -10,10 +10,6 @@
     "isolatedModules": true,
     "allowImportingTsExtensions": true,
     "noEmit": true,
-    "skipLibCheck": true,
-    "paths": {
-      "@adlc-coding/contracts": ["./packages/contracts/src/index.ts"],
-      "@adlc-coding/contracts/*": ["./packages/contracts/src/*"]
-    }
+    "skipLibCheck": true
   }
 }

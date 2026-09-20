@@ -8,6 +8,12 @@ Notable changes to this repository are listed here by released semver. The versi
 
 - Inbox sparks carry a `Type` axis (`feature` / `bug`) below `Status`, and `QUEUE.md` rows carry it as a tag; promotion derives the Agent Note class from it (`feature` → `feature/`, `bug` → `bug-fix/`). The type stays a documented convention — the inbox is still outside every format gate.
 
+### Removed
+
+- The application faces: `server/` (Fastify), `apps/web/` (React + Vite), and the `packages/contracts/` seam. The kit now ships the AI work-paradigm and workflow rule system only — no application code and no cross-language contract package; a stack adopts the rules with `adopt` and keeps its own root, typecheck program, and lanes.
+- `dev:server`, `dev:web`, and `build` scripts, the `web` vitest lane with its `jsdom` / Testing Library / `vite-tsconfig-paths` dependencies, the React oxlint plugins, and the `paths` mapping in `tsconfig.base.json`.
+- The installer's `--scope` identity: no scoped packages remain, so `new` renames the project name only.
+
 ## [0.3.0] — 2026-09-15
 
 ### Added

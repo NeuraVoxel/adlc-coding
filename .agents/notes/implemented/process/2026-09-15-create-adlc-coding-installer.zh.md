@@ -8,7 +8,7 @@ kit 的价值在于它那套经过门禁验证的规则（AGENTS.md、门禁、�
 
 ## Decision
 
-`packages/create-adlc-coding` 是零依赖的 TypeScript 安装器，有两种模式。`new <dir>` 把整个 checkout（剔除 `.git`、`node_modules`、`dist`、`coverage`、lockfile 与安装器自身）拷贝为新项目，把文本面上的 `@adlc-coding/*` 与 `adlc-coding` 改名为 `--scope`/`--name`，并重建 `CLAUDE.md` 别名。`adopt [dir]` 把选中的组件（`rules`、`gates`、`docs`、`ci`）装进既有项目，把缺失的 runner 脚本合并进 `package.json`，不加 `--force` 时拒绝覆盖，并打印门禁图所依赖的 devDependency 与脚本前置条件。组件**从 checkout 实时拷贝**——不存在会漂移的模板快照；checkout 是唯一事实源，新项目收到的正是门禁刚刚验证过的规则。
+`packages/create-adlc-coding` 是零依赖的 TypeScript 安装器，有两种模式。`new <dir>` 把整个 checkout（剔除 `.git`、`node_modules`、`dist`、`coverage`、lockfile 与安装器自身）拷贝为新项目，把文本面上的 `adlc-coding` 改名为 `--name`，并重建 `CLAUDE.md` 别名。`adopt [dir]` 把选中的组件（`rules`、`gates`、`docs`、`ci`）装进既有项目，把缺失的 runner 脚本合并进 `package.json`，不加 `--force` 时拒绝覆盖，并打印门禁图所依赖的 devDependency 与脚本前置条件。组件**从 checkout 实时拷贝**——不存在会漂移的模板快照；checkout 是唯一事实源，新项目收到的正是门禁刚刚验证过的规则。
 
 ## Alternatives considered
 

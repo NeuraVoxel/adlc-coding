@@ -2,15 +2,13 @@
 
 中文 | [English](README.md)
 
-adlc-coding 系列的 TypeScript 参考 kit：React + Vite 前端、Fastify 后端、pnpm workspaces，以及一套经过门禁验证的工程规范体系（分层 AGENTS.md 指令、`run-gates` 门禁聚合、lefthook 钩子、Agent Note 决策记录）。
+面向 AI 工作范式与工作流的 kit：范式与 `kit-*` 工作流技能，加上一套经过门禁验证的工程规范体系（分层 AGENTS.md 指令、`run-gates` 门禁聚合、lefthook 钩子、Agent Note 决策记录）。它语言无关、不携带任何应用代码——任何技术栈都可以用 `adopt` 采纳这套规则，并保留自己的仓库根。
 
 ## 快速开始
 
 ```sh
 pnpm install
 pnpm run check:ci     # lint + typecheck + test 门禁聚合
-pnpm run dev:server   # http://127.0.0.1:3000/health
-pnpm run dev:web      # Vite dev server
 ```
 
 ## 在新项目中使用本 kit
@@ -19,21 +17,18 @@ pnpm run dev:web      # Vite dev server
 
 ```sh
 # 脚手架新项目：完整拷贝、改名、钩子就位
-pnpm run create -- new ../my-app --scope @myco --name my-app
+pnpm run create -- new ../my-app --name my-app
 
 # 只把验证过的规则采纳进既有项目
 pnpm run create -- adopt ../existing-app --only rules,gates,docs,workflows,ci
 ```
 
-`new` 会拷贝除 `.git`、`node_modules`、构建产物和 lockfile 之外的一切，把 `@adlc-coding/*` 和 `adlc-coding` 改名为 `--scope`/`--name`，并重建 `CLAUDE.md` 别名。`adopt` 不加 `--force` 时拒绝覆盖已有文件，会把缺失的 runner 脚本合并进 `package.json`，并打印门禁所依赖的前置条件。详见[安装器 README](packages/create-adlc-coding/README.md)。
+`new` 会拷贝除 `.git`、`node_modules`、构建产物和 lockfile 之外的一切，把 `adlc-coding` 改名为 `--name`，并重建 `CLAUDE.md` 别名。`adopt` 不加 `--force` 时拒绝覆盖已有文件，会把缺失的 runner 脚本合并进 `package.json`，并打印门禁所依赖的前置条件。详见[安装器 README](packages/create-adlc-coding/README.md)。
 
 ## 目录
 
 | 目录 | 职责 |
 |---|---|
-| `apps/web/` | React + Vite 前端（浏览器编译面） |
-| `server/` | Fastify 后端（Node 编译面） |
-| `packages/contracts/` | 跨端契约源；第三步成为生成物家园 |
 | `packages/create-adlc-coding/` | 安装器：脚手架新项目或采纳规则 |
 | `scripts/` | 门禁编排 runner 与 verify 脚本 |
 | `docs/` | 架构地图、测试策略、发版合同 |
@@ -47,12 +42,11 @@ pnpm run create -- adopt ../existing-app --only rules,gates,docs,workflows,ci
 ## 采纳清单
 
 1. 根 `package.json` 的 `name` 与目录名：`adlc-coding` → 你的项目名。
-2. 占位 scope `@adlc-coding/*` → 你的 scope：三个 package 清单，以及 `tsconfig.base.json` 的 `paths`。
-3. 替换示例端点 `GET /health` 与 `apps/web/src/App.tsx`。
-4. 添加 git remote；`.github/workflows/ci.yml` 已按 pnpm + Node 22 配好。
+2. 添加 git remote；`.github/workflows/ci.yml` 已按 pnpm + Node 22 配好。
+3. 提供 `lint` / `typecheck` / `test` 脚本——门禁图会调用它们；脚手架会继承本 kit 的脚本。
 
-`new` 命令会自动完成第 1、2 步和第 4 步的改名。
+`new` 命令会自动完成第 1、2 步。
 
-## adlc-coding 系列
+## 采纳到另一个技术栈
 
-`adlc-coding`（本仓库，第一步）→ `adlc-coding-py`（Python 单栈，第二步）→ `adlc-coding`（集成形态，第三步）。组合规则见[路线图 Agent Note](.agents/notes/implemented/architecture/2026-09-15-adlc-coding-three-phase-roadmap.md)。
+本仓库不携带任何栈相关代码：某个技术栈住在自己的仓库里、拥有自己的泳道，通过 `adopt` 取走规则集并自行保持绿灯。跨栈共享产物只有两种形式——按语言生成的 schema，以及提交进 git、被双方离线回放的 fixture。组合规则见[路线图 Agent Note](.agents/notes/implemented/architecture/2026-09-15-adlc-coding-three-phase-roadmap.md)。

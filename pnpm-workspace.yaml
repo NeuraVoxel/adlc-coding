@@ -1,6 +1,4 @@
 packages:
-  - server
-  - apps/*
   - packages/*
 allowBuilds:
   esbuild: true
