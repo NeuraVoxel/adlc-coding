@@ -2,7 +2,7 @@
 
 Notable changes to this repository are listed here by released semver. The version authority is root `package.json`; each released cut also carries an annotated git tag `v<version>`. Development accumulates under `## Unreleased`; a cut renames that heading (see [docs/release.md](docs/release.md)).
 
-## Unreleased
+## [1.0.0] — 2026-09-20
 
 ### Added
 
