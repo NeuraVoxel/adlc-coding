@@ -4,7 +4,7 @@ Status: implemented
 
 ## Problem
 
-[`QUEUE.md`](../../../inbox/QUEUE.md) 的行此前靠标题文本辨认，一条 spark 没有比中文标题更短的把手：想说"把 apps/inbox 那条升格"只能靠散文匹配，两条标题相近的 spark 还有选错的风险；在对话轮次、提交信息或升格后的 Agent Note 里引用某条 spark，也只能把标题复述一遍。[类型轴](2026-09-18-inbox-type-classification.zh.md)给出了类别，但没有给出身份。
+[`QUEUE.md`](../../../inbox/QUEUE.md) 的行此前靠标题文本辨认，一条 spark 没有比中文标题更短的把手：想说"把 apps/inbox 那条升格"只能靠散文匹配，两条标题相近的 spark 还有选错的风险；在对话轮次、提交信息或升格后的 Agent Note 里引用某条 spark，也只能把标题复述一遍。[类型轴](../../../inbox/README.zh.md)给出了类别，但没有给出身份。
 
 ## Decision
 

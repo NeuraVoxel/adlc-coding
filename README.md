@@ -49,4 +49,4 @@ The `new` command performs 1 and 2 automatically.
 
 ## Adopting into another stack
 
-This repository ships no stack-specific code: a stack lives in its own repository with its own lane, runs `adopt` to take the rule set, and stays green there. Shared artifacts between stacks take only two forms — schemas generated per language and fixtures committed to git. Composition rules: [roadmap Agent Note](.agents/notes/implemented/architecture/2026-09-15-adlc-coding-three-phase-roadmap.md).
+This repository ships no stack-specific code: a stack lives in its own repository with its own lane, runs `adopt` to take the rule set, and stays green there. Shared artifacts between stacks take only two forms — schemas generated per language and fixtures committed to git.

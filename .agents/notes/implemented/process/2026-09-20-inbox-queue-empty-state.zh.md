@@ -8,7 +8,7 @@ Status: implemented
 
 ## Decision
 
-看板只由 `# Inbox queue` 标题与条目行组成，别无他物：没有图例、没有空态说明、行间与行下不留散文；队列为空即"没有任何 `[ ]` 行"，这一点由 README 对写明写，README 仍是看板唯一的权威。捕获继续直接插在标题下，此时已无歧义；技能无需改动。inbox 依旧在一切 format gate 之外，因此这只是 README 与捕获 / 升格共同维持的约定，与[类型轴](2026-09-18-inbox-type-classification.md)相同。
+看板只由 `# Inbox queue` 标题与条目行组成，别无他物：没有图例、没有空态说明、行间与行下不留散文；队列为空即"没有任何 `[ ]` 行"，这一点由 README 对写明写，README 仍是看板唯一的权威。捕获继续直接插在标题下，此时已无歧义；技能无需改动。inbox 依旧在一切 format gate 之外，因此这只是 README 与捕获 / 升格共同维持的约定，与[类型轴](../../../inbox/README.zh.md)相同。
 
 ## Alternatives considered
 

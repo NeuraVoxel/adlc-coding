@@ -15,7 +15,7 @@ adlc-coding 是 adlc-coding 系列中面向 AI 工作范式与工作流的 kit�
 
 ## 语言策略
 
-面向人的合同以英文为主档，同一变更内更新 `.zh.md` 中文对照：`README.md`、`docs/*.md`、`.agents/notes/**/*.md`，以及 inbox 与 learning 的 README。`AGENTS.md` 与 `.agents/skills/*/SKILL.md` 保持纯英文——面向 agent，以约束模型上下文（[配对决策](../.agents/notes/implemented/process/2026-09-15-bilingual-doc-pairing.md)）。inbox spark、`QUEUE.md`、学习笔记与 `ChangeLog.md` 有意保持单语，在配对门禁之外。`pnpm run doc-sync` 拒绝缺失、孤儿或结构漂移的对照文件。
+面向人的合同以英文为主档，同一变更内更新 `.zh.md` 中文对照：`README.md`、`docs/*.md`、`.agents/notes/**/*.md`，以及 inbox 与 learning 的 README。`AGENTS.md` 与 `.agents/skills/*/SKILL.md` 保持纯英文——面向 agent，以约束模型上下文。inbox spark、`QUEUE.md`、学习笔记与 `ChangeLog.md` 有意保持单语，在配对门禁之外。`pnpm run doc-sync` 拒绝缺失、孤儿或结构漂移的对照文件。
 
 ## typecheck 范围
 
@@ -47,4 +47,4 @@ Git 钩子分工：pre-commit 只做暂存文件的快速检查（lint --fix、�
 1. **schema** —— 各语言的类型由它生成；禁止手写另一个栈的类型副本；生成物新鲜度由 gen/verify 成对门禁守护。
 2. **提交在 git 里的 fixtures** —— 双端离线回放，这是每条泳道可独立验证的保障。
 
-采纳这套规则的栈保留自己的仓库、根目录与泳道，并在出现任何跨栈产物之前先跑绿；活进程集成验证只存在于采纳方自己的 e2e 泳道。采纳规则与组合规则：[Agent Note](../.agents/notes/implemented/architecture/2026-09-15-adlc-coding-three-phase-roadmap.md)。安装器设计：[Agent Note](../.agents/notes/implemented/process/2026-09-15-create-adlc-coding-installer.md)。
+采纳这套规则的栈保留自己的仓库、根目录与泳道，并在出现任何跨栈产物之前先跑绿；活进程集成验证只存在于采纳方自己的 e2e 泳道。安装器设计见 `packages/create-adlc-coding/` 及其自带 README。

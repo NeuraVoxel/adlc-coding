@@ -15,7 +15,7 @@ adlc-coding is the AI work-paradigm and workflow kit of the adlc-coding series: 
 
 ## Language policy
 
-Human-facing contracts are English-primary with a `.zh.md` Chinese counterpart updated in the same change: `README.md`, `docs/*.md`, `.agents/notes/**/*.md`, and the inbox and learning READMEs. `AGENTS.md` and the `.agents/skills/*/SKILL.md` files stay English-only — agent-facing, to bound model context ([pairing decision](../.agents/notes/implemented/process/2026-09-15-bilingual-doc-pairing.md)). Inbox sparks, `QUEUE.md`, learning notes, and `ChangeLog.md` are single-language by design and outside the pairing gate. `pnpm run doc-sync` rejects missing, orphaned, or structurally drifted counterparts.
+Human-facing contracts are English-primary with a `.zh.md` Chinese counterpart updated in the same change: `README.md`, `docs/*.md`, `.agents/notes/**/*.md`, and the inbox and learning READMEs. `AGENTS.md` and the `.agents/skills/*/SKILL.md` files stay English-only — agent-facing, to bound model context. Inbox sparks, `QUEUE.md`, learning notes, and `ChangeLog.md` are single-language by design and outside the pairing gate. `pnpm run doc-sync` rejects missing, orphaned, or structurally drifted counterparts.
 
 ## Typechecking scope
 
@@ -47,4 +47,4 @@ This kit ships no cross-language contract package. Two stacks share exactly two 
 1. **Schemas** — per-language types are generated from them; hand-written copies of another stack's types are forbidden; generation freshness is gated by a gen/verify pair.
 2. **Fixtures committed to git** — replayed offline by both sides, which is what keeps every lane independently validatable.
 
-A stack adopting this rule set keeps its own repository, root, and lane and goes green there before any cross-stack artifact exists; live-process integration verification lives only in the adopter's own e2e lane. The adoption rule and its composition rules: [Agent Note](../.agents/notes/implemented/architecture/2026-09-15-adlc-coding-three-phase-roadmap.md). The installer design: [Agent Note](../.agents/notes/implemented/process/2026-09-15-create-adlc-coding-installer.md).
+A stack adopting this rule set keeps its own repository, root, and lane and goes green there before any cross-stack artifact exists; live-process integration verification lives only in the adopter's own e2e lane. The installer design lives in `packages/create-adlc-coding/` and its own README.

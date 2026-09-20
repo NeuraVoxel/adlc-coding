@@ -8,7 +8,7 @@ The shipped [`QUEUE.md`](../../../inbox/QUEUE.md) opened with a paragraph — "E
 
 ## Decision
 
-The board is the `# Inbox queue` heading and its rows — nothing else. No legend, no empty-state note, no prose between or below rows; an empty queue is a board with no `[ ]` row, and the README pair states that and stays the board's only authority. Capture keeps prepending directly under the heading, which is now unambiguous; the skill needed no change. The inbox stays outside every format gate, so this is a convention held by the README and by capture/promote, as with the [type axis](2026-09-18-inbox-type-classification.md).
+The board is the `# Inbox queue` heading and its rows — nothing else. No legend, no empty-state note, no prose between or below rows; an empty queue is a board with no `[ ]` row, and the README pair states that and stays the board's only authority. Capture keeps prepending directly under the heading, which is now unambiguous; the skill needed no change. The inbox stays outside every format gate, so this is a convention held by the README and by capture/promote, as with the [type axis](../../../inbox/README.md).
 
 ## Alternatives considered
 

@@ -69,7 +69,7 @@ ID: Feat-0001
 1. 新建 `yyyy-mm-dd-slug.md`，写 `Status: open`、一行 `Type:`（`feature` 或 `bug`）、一行 `ID:`（取该类型已用最大号 +1），`## Spark` 写几句即可。
 2. 在 `QUEUE.md` 顶部（新 → 旧）加一行 `- [ ] [<编号>] [标题](./yyyy-mm-dd-slug.md)`。
 
-也可使用随 kit 安装的技能（kit 创作的技能平铺在 `.agents/skills/` 下）：
+也可使用随本仓库一起安装的技能（`adlc-*` 技能平铺在 `.agents/skills/` 下）：
 
 | Skill | 用途 |
 |---|---|

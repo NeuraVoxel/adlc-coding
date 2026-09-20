@@ -8,6 +8,11 @@ Notable changes to this repository are listed here by released semver. The versi
 
 - Inbox sparks carry a stable task ID: `Feat-0001` / `Bug-0001`, a per-type four-digit sequence derived as the highest number in use plus one, written on an `ID:` line in the spark and as the `QUEUE.md` row tag (replacing the type tag, since the prefix carries the type). `adlc-inbox-promote` takes an ID as its target (case-insensitive prefix, numeric digits, so `feat-1` resolves), and `adlc-inbox-view` gains an `ID` column. IDs never change and are never reused.
 
+### Fixed
+
+- The Chinese inbox README introduces the installed skills with the repository's own `adlc-` prefix, matching its English counterpart's `adlc-authored skills`; the 1.0.0 `kit-*` → `adlc-*` rename had left that one line behind. Generic uses of "kit" as this repository's common noun are untouched.
+- Twelve inbound links to Agent Notes that no longer exist are repaired: `README.md` and `README.zh.md` no longer point at the removed roadmap note, `docs/architecture.md` and its counterpart point the installer design at `packages/create-adlc-coding/`, and the two `2026-09-20` inbox notes point the type axis at the inbox README pair, which is where the type axis is documented now.
+
 ## [1.0.0] — 2026-09-20
 
 ### Added

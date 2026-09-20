@@ -49,4 +49,4 @@ pnpm run create -- adopt ../existing-app --only rules,gates,docs,workflows,ci
 
 ## 采纳到另一个技术栈
 
-本仓库不携带任何栈相关代码：某个技术栈住在自己的仓库里、拥有自己的泳道，通过 `adopt` 取走规则集并自行保持绿灯。跨栈共享产物只有两种形式——按语言生成的 schema，以及提交进 git、被双方离线回放的 fixture。组合规则见[路线图 Agent Note](.agents/notes/implemented/architecture/2026-09-15-adlc-coding-three-phase-roadmap.md)。
+本仓库不携带任何栈相关代码：某个技术栈住在自己的仓库里、拥有自己的泳道，通过 `adopt` 取走规则集并自行保持绿灯。跨栈共享产物只有两种形式——按语言生成的 schema，以及提交进 git、被双方离线回放的 fixture。

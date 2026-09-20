@@ -4,7 +4,7 @@ Status: implemented
 
 ## Problem
 
-A spark had no handle shorter than its Chinese title. [`QUEUE.md`](../../../inbox/QUEUE.md) rows were identified by title text, so "promote the apps/inbox one" depended on prose matching, and promoting two similarly-titled sparks risked picking the wrong one. There was also no way to refer to a spark from a chat turn, a commit message, or a promoted Agent Note without restating its whole title. The [type axis](2026-09-18-inbox-type-classification.md) added a kind, but not an identity.
+A spark had no handle shorter than its Chinese title. [`QUEUE.md`](../../../inbox/QUEUE.md) rows were identified by title text, so "promote the apps/inbox one" depended on prose matching, and promoting two similarly-titled sparks risked picking the wrong one. There was also no way to refer to a spark from a chat turn, a commit message, or a promoted Agent Note without restating its whole title. The [type axis](../../../inbox/README.md) added a kind, but not an identity.
 
 ## Decision
 
