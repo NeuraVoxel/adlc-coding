@@ -12,7 +12,7 @@
 
 ## 条目语言
 
-正文默认用中文写；Status 与 Type 取值、路径、命令与术语保留英文（例如 Agent Note、`QUEUE.md`、`Status: open`、`Type: bug`）。
+正文默认用中文写；Status、Type 与 ID 取值、路径、命令与术语保留英文（例如 Agent Note、`QUEUE.md`、`Status: open`、`Type: bug`、`ID: Feat-0001`）。
 
 ## 布局
 
@@ -29,6 +29,7 @@
 
 Status: open
 Type: feature
+ID: Feat-0001
 
 ## Spark
 <几句：想法是什么、为何此刻记下>
@@ -50,11 +51,13 @@ Type: feature
 
 `Type` 捕获一次即定，不随 status 变化：升格或丢弃后仍保留捕获时的类型。形状没有门禁检查，靠本 README 与纪律约束。
 
+`ID` 是条目的任务编号：`feature` 用 `Feat-`、`bug` 用 `Bug-`，后接该类型独立的四位序号（`Feat-0001`、`Bug-0001`）。捕获时扫描 spark 文件与 `QUEUE.md` 行，取该类型已用的最大号 +1。编号分配一次即定，之后不再变化——不随 status 变，升格或丢弃也不变；已离队条目的号码永不回收。编号机制之前捕获的 spark 在首次触及时补号。编号同样没有门禁检查，靠本 README 与纪律约束。
+
 ## QUEUE.md
 
 - `[ ]` 表示 `open`。
 - `[x]` 表示已离队（`promoted` 或 `discarded`）；升格行链到 Agent Note；丢弃行可附短原因。
-- 每行在链接前带条目类型标签：`- [ ] [feature] [标题](./yyyy-mm-dd-slug.md)`。
+- 每行在链接前带条目编号标签：`- [ ] [Feat-0001] [标题](./yyyy-mm-dd-slug.md)`。标签本身已带类型——`Feat-` 即 `feature`、`Bug-` 即 `bug`——所以扫队列可按前缀只看一类。
 - 顺序：捕获日新 → 旧。
 
 看板只有 `# Inbox queue` 标题与条目行——没有图例、没有空态说明；本 README 是它唯一的权威，事实写在这里，不写进文件。没有 `[ ]` 行即表示队列为空。
@@ -63,22 +66,22 @@ Type: feature
 
 ## 捕获
 
-1. 新建 `yyyy-mm-dd-slug.md`，写 `Status: open`、一行 `Type:`（`feature` 或 `bug`），`## Spark` 写几句即可。
-2. 在 `QUEUE.md` 顶部（新 → 旧）加一行 `- [ ] [<type>] [标题](./yyyy-mm-dd-slug.md)`。
+1. 新建 `yyyy-mm-dd-slug.md`，写 `Status: open`、一行 `Type:`（`feature` 或 `bug`）、一行 `ID:`（取该类型已用最大号 +1），`## Spark` 写几句即可。
+2. 在 `QUEUE.md` 顶部（新 → 旧）加一行 `- [ ] [<编号>] [标题](./yyyy-mm-dd-slug.md)`。
 
 也可使用随 kit 安装的技能（kit 创作的技能平铺在 `.agents/skills/` 下）：
 
 | Skill | 用途 |
 |---|---|
-| [adlc-inbox-capture](../skills/adlc-inbox-capture/SKILL.md) | 只需主体（可选标题 / slug / Notes / type）：写 spark（类型须落定，不得静默缺省）并更新 `QUEUE.md` |
-| [adlc-inbox-promote](../skills/adlc-inbox-promote/SKILL.md) | 明确升格某条 `open` spark 为 `proposed/` Agent Note——class 由类型推导，除非显式给定——并改状态与队列 |
-| [adlc-inbox-view](../skills/adlc-inbox-view/SKILL.md) | 只读：把全部 spark 渲染成按类型（`feature` / `bug`）分组的表格，新 → 旧，带 `Status` 列 |
+| [adlc-inbox-capture](../skills/adlc-inbox-capture/SKILL.md) | 只需主体（可选标题 / slug / Notes / type）：写 spark（类型须落定，不得静默缺省）、分配下一个编号，并更新 `QUEUE.md` |
+| [adlc-inbox-promote](../skills/adlc-inbox-promote/SKILL.md) | 明确升格某条 `open` spark（可用编号 / 路径 / 标题 / 关键词指定）为 `proposed/` Agent Note——class 由类型推导，除非显式给定——并改状态与队列 |
+| [adlc-inbox-view](../skills/adlc-inbox-view/SKILL.md) | 只读：把全部 spark 渲染成按类型（`feature` / `bug`）分组的表格，新 → 旧，带 `ID` 与 `Status` 列 |
 
 捕获不升格；升格须当轮明确提出。
 
 ## 扫队列
 
-打开 `QUEUE.md`，只看 `[ ]` 行；可按 `[feature]` / `[bug]` 标签只扫一类。需要更多上下文再点开条目文件。不强制回顾节奏。想一眼看全整个 inbox（含已离队条目）时，用 [adlc-inbox-view](../skills/adlc-inbox-view/SKILL.md) 渲染成按类型分组的表格。
+打开 `QUEUE.md`，只看 `[ ]` 行；可按 `Feat-` / `Bug-` 前缀只扫一类。需要更多上下文再点开条目文件。不强制回顾节奏。想一眼看全整个 inbox（含已离队条目）时，用 [adlc-inbox-view](../skills/adlc-inbox-view/SKILL.md) 渲染成按类型分组的表格。
 
 ## 升格
 
@@ -86,7 +89,7 @@ Type: feature
 2. 由类型定 class：`feature` → `notes/proposed/feature/`，`bug` → `notes/proposed/bug-fix/`。明确指定的 class 优先；类型缺失或含糊时提问一次，不猜。
 3. 在 `.agents/notes/proposed/<class>/yyyy-mm-dd-….md` 新建正式 note——禁止通过改名或移动 inbox 文件产生。
 4. 双向互链：proposed note 链 spark；spark 改为 `Status: promoted` 并链 note，`Type` 保留。
-5. `QUEUE.md` 对应行改 `[x]`，附 Agent Note 链接，类型标签保留。
+5. `QUEUE.md` 对应行改 `[x]`，附 Agent Note 链接，编号标签保留。
 6. 优先同一变更完成；若拆提交，结束时双向链接必须齐全。
 
 Agent 可代写条目并更新 `QUEUE.md`；除非当轮人明确要求，Agent 不得自行升格。

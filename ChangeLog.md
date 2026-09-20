@@ -2,6 +2,12 @@
 
 Notable changes to this repository are listed here by released semver. The version authority is root `package.json`; each released cut also carries an annotated git tag `v<version>`. Development accumulates under `## Unreleased`; a cut renames that heading (see [docs/release.md](docs/release.md)).
 
+## Unreleased
+
+### Added
+
+- Inbox sparks carry a stable task ID: `Feat-0001` / `Bug-0001`, a per-type four-digit sequence derived as the highest number in use plus one, written on an `ID:` line in the spark and as the `QUEUE.md` row tag (replacing the type tag, since the prefix carries the type). `adlc-inbox-promote` takes an ID as its target (case-insensitive prefix, numeric digits, so `feat-1` resolves), and `adlc-inbox-view` gains an `ID` column. IDs never change and are never reused.
+
 ## [1.0.0] — 2026-09-20
 
 ### Added

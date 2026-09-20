@@ -1,8 +1,9 @@
 ---
 name: adlc-inbox-promote
 description: >-
-  Promotes an open `.agents/inbox/` spark into a formal `proposed/` Agent Note
-  with bidirectional links and a QUEUE.md checkbox update. Use only when the
+  Promotes an open `.agents/inbox/` spark — targeted by ID (`Feat-0001`), path,
+  or title — into a formal `proposed/` Agent Note with bidirectional links and
+  a QUEUE.md checkbox update. Use only when the
   user explicitly asks to 升格 / promote an inbox item, or says
   adlc-inbox-promote. Part of the adlc-* skill family under `.agents/skills/`.
   Do not use for capture-only requests.
@@ -16,7 +17,7 @@ Promote one open spark to `proposed/`. Contract authority: the [inbox README](..
 
 | Input | Required | Notes |
 |---|---|---|
-| **Target** | yes | A spark path, a QUEUE title, or a keyword uniquely matching one `open` spark |
+| **Target** | yes | A spark ID (`Feat-0001`, `Bug-0002` — matched case-insensitively, number compared numerically so `feat-1` resolves), a spark path, a QUEUE title, or a keyword uniquely matching one `open` spark |
 | **class** | no | One of `feature` / `bug-fix` / `simplification` / `architecture` / `process` / `testing`; derived from the spark's `Type` (`feature` → `feature`, `bug` → `bug-fix`) when not given; ask once when the spark has no `Type` or the mapping is wrong for this spark |
 | **Extra facts** | no | Additional facts for the Agent Note; never invent beyond spark plus extras |
 
@@ -24,7 +25,7 @@ If the target is missing or matches zero / multiple `open` sparks, ask once and 
 
 ## Steps
 
-1. Resolve the spark file. Require `Status: open`; if `promoted` or `discarded`, stop and report.
+1. Resolve the spark file. An ID target (`Feat-NNNN` / `Bug-NNNN`) matches the spark whose `ID:` line — or `QUEUE.md` row tag — is that number; compare the prefix case-insensitively and the number numerically, so `feat-1` and `Feat-0001` are the same spark. Otherwise resolve by path, QUEUE title, or keyword. Require `Status: open`; if `promoted` or `discarded`, stop and report.
 2. Choose the `class`: an explicitly given class wins; otherwise derive it from the spark's `Type` (`feature` → `feature`, `bug` → `bug-fix`). One clarifying question when the spark has no `Type`, or when the type's mapping plainly misfits the spark.
 3. Create `.agents/notes/proposed/<class>/yyyy-mm-dd-<slug>.md` using today's date and a slug from the spark title. Never move or rename the inbox file into notes. If the path exists, adjust the slug — never overwrite.
 4. Write a full **proposed** Agent Note, required sections only:
@@ -41,10 +42,10 @@ Status: proposed
 ## Risks
 ```
 
-In `## Proposal` (or a nearby line), link back to the spark with a relative path. Base the content on the spark (plus extras); expand it into a real proposal without inventing unstated product scope. `## Alternatives considered` needs at least one genuine alternative — from the user, implied by the spark, or an honest "defer / do nothing" with why it loses for now. The note follows the language policy for `.agents/notes/`: English primary with a `.zh.md` counterpart.
+In `## Proposal` (or a nearby line), link back to the spark with a relative path, naming its ID in the link text (for example `[Feat-0001](../../../inbox/yyyy-mm-dd-slug.md)`) so the spark stays findable by number. Base the content on the spark (plus extras); expand it into a real proposal without inventing unstated product scope. `## Alternatives considered` needs at least one genuine alternative — from the user, implied by the spark, or an honest "defer / do nothing" with why it loses for now. The note follows the language policy for `.agents/notes/`: English primary with a `.zh.md` counterpart.
 
 5. Update the spark: `Status: promoted` and a clear link to the new Agent Note (both language files when a counterpart exists).
-6. Update the matching `QUEUE.md` row to `[x]` and append `→ [Agent Note](<relative path>)`.
+6. Update the matching `QUEUE.md` row to `[x]` and append `→ [Agent Note](<relative path>)`; the ID tag stays.
 7. Satisfy the notes README skeleton; the note-format gate rejects drifted sections once introduced.
 8. Report the spark path, the Agent Note path, and the QUEUE line. Do **not** commit unless the user asks. Do **not** implement the proposal.
 
