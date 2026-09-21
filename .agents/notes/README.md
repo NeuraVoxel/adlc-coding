@@ -10,18 +10,35 @@ The path encodes both axes: `{lifecycle}/{class}/yyyy-mm-dd-topic.md`, and the c
 
 - **lifecycle** (the top-level directory) is the status, and notes move between folders as it changes:
   - `proposed/` — reviewed proposals, not yet built.
-  - `implemented/` — the decision shipped; the file records the decision and the rejected alternatives, and **stays current with what actually shipped**: when code later moves a file, renames a package, or changes a default, the same change updates the corresponding facts (facts only — never the decision itself).
+  - `implemented/` — the decision shipped; the file records the decision and the rejected alternatives, and **stays current with what actually shipped** ([`implemented/AGENTS.md`](implemented/AGENTS.md)): when code later moves a file, renames a package, or changes a default, the same change updates the corresponding facts (facts only — never the decision itself).
   - `rejected/` — considered and declined; the verdict lives on the `Status:` line and the proposal stays frozen as it was.
   - `archived/` — shipped decisions whose rationale no longer guides future work; append-only frozen history, never current authority.
-- **class** (the nested directory) is the kind of decision, a closed set: `feature` / `bug-fix` / `simplification` / `architecture` / `process` / `testing`. Adding a class means extending `CLASSES` in the gate script and updating this section in the same change.
+- **class** (the nested directory) is the kind of decision, a closed set — what each one covers is spelled out in [Classification](#classification). Adding a class means extending `CLASSES` in the gate script and updating that section in the same change.
 
-The date is when the topic was **first proposed** (per git history). Notes cross-reference through relative Markdown links, never bare filenames or numbers. There is no centralized index; the active tree is the inventory.
+The date is when the topic was **first proposed** (per git history). Notes cross-reference through relative Markdown links, never bare filenames or numbers. There is no centralized index, because an index restates every note's one-line claim and drifts the moment a note moves lifecycle or class — the active tree *is* the inventory, and browsing it costs one `ls`. The gate enforces the same conclusion structurally: any file at the notes root other than the README pair and the supplements below fails classification, so a generated `INDEX.md` cannot survive the tree.
+
+Environment instructions that apply only inside this tree live in English-only supplements — [`AGENTS.md`](AGENTS.md), [`implemented/AGENTS.md`](implemented/AGENTS.md), [`archived/AGENTS.md`](archived/AGENTS.md) — each carrying one rule the README cannot carry, and pointing back rather than restating it. The classification gate admits them; the pairing gate exempts them exactly as it exempts the root `AGENTS.md`.
+
+## Classification
+
+Each Note belongs to one path-encoded class from the closed set enforced by `scripts/agent-note-tree.ts`; the classification gate rejects any other folder.
+
+| Class | What it covers |
+|---|---|
+| `feature` | A new user- or model-facing capability. |
+| `bug-fix` | Corrects a defect, or closes a gap a review or postmortem surfaced. |
+| `simplification` | Removes code, behavior, or surface area without adding a capability. |
+| `architecture` | A structural decision about the **shipped source** — how packages relate, what the runtime vocabulary is. |
+| `process` | Tooling, policy, or workflow **around** the code — gates, hooks, the installer — not runtime behavior. |
+| `testing` | Test infrastructure and strategy. |
+
+The `architecture` / `process` line is the one that needs judgment: architecture is about the source we ship, process is the surrounding tooling and workflow. `refactor` is deliberately absent — it overlaps `simplification`, whose discriminator, does observable behavior change?, already covers it.
 
 ## Archiving and deletion
 
 Archive an implemented note when the shipped decision is complete and its rationale is unlikely to guide future work; the calibrated question is whether any alternative, ownership boundary, negative guarantee, durable-semantics rule, or reintroduction condition here still prevents a plausible mistake — never word count, age, or a quota. Never archive a proposed note: reject it instead. Keep a rejected note only while its rationale prevents a plausible mistake; otherwise delete it entirely.
 
-Archiving moves the complete English/Chinese pair to `archived/{class}/`, keeps `Status: implemented`, inserts `Archived: YYYY-MM-DD` directly below the status line in both files, and repairs or deletes inbound links — the only content changes archiving permits. Once sealed, the pair is permanently frozen: [`verify-archived-agent-notes`](../../scripts/verify-archived-agent-notes.ts) hashes every archived file against the append-only manifest (`scripts/archived-notes.manifest.json`), so any later edit, move, or deletion fails the gate. Re-record the manifest only in the same change that adds new archives.
+Archiving moves the complete English/Chinese pair to `archived/{class}/`, keeps `Status: implemented`, inserts `Archived: YYYY-MM-DD` directly below the status line in both files, and repairs or deletes inbound links — the only content changes archiving permits. Links *out of* an archived note are never inspected, verified, or repaired: they were frozen with it, and current gates do not grade history. [`archived/AGENTS.md`](archived/AGENTS.md) is the freeze contract for what happens next. Once sealed, the pair is permanently frozen: [`verify-archived-agent-notes`](../../scripts/verify-archived-agent-notes.ts) hashes every archived file against the append-only manifest (`scripts/archived-notes.manifest.json`), so any later edit, move, or deletion fails the gate. Re-record the manifest only in the same change that adds new archives.
 
 ## When to write one
 

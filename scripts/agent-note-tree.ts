@@ -23,6 +23,29 @@ export type NoteClass = (typeof CLASSES)[number]
 
 const NOTE_NAME = /^(\d{4}-\d{2}-\d{2})-([a-z0-9-]+)(?:\.zh)?\.md$/
 
+/**
+ * Agent-facing supplements allowed inside the notes tree. Environment-level
+ * instructions are English-only by policy, so these files have no `.zh.md`
+ * counterpart and are exempted from pairing the same way the root
+ * `AGENTS.md` is.
+ */
+export const SUPPLEMENT_FILES = ['AGENTS.md', 'CLAUDE.md'] as const
+
+/**
+ * Whether a notes path is an agent-facing supplement rather than a note.
+ * @param relPosixPath - path relative to `.agents/notes/`.
+ * @returns true for `<supplement>` at the notes root or directly inside one
+ * lifecycle; supplements do not nest deeper, because every deeper level is a
+ * class directory whose only permitted content is a note.
+ */
+export function isSupplementPath(relPosixPath: string): boolean {
+  const segments = relPosixPath.split('/')
+  const name = segments[segments.length - 1] ?? ''
+  if (!(SUPPLEMENT_FILES as readonly string[]).includes(name)) return false
+  if (segments.length === 1) return true
+  return segments.length === 2 && LIFECYCLES.includes(segments[0] as Lifecycle)
+}
+
 /** A parsed note path: `{lifecycle}/{class}/yyyy-mm-dd-topic.md`. */
 export interface NotePath {
   lifecycle: Lifecycle
@@ -56,13 +79,14 @@ export function parseNotePath(relPosixPath: string): NotePath | null {
 /**
  * Collect structural violations across a notes corpus.
  * @param relPaths - paths relative to the notes root.
- * @returns one human-readable violation per unclassifiable path; the root
- * README pair is the only exempt surface.
+ * @returns one human-readable violation per unclassifiable path; the README
+ * pair and the agent-facing supplements are the exempt surfaces.
  */
 export function findTreeViolations(relPaths: readonly string[]): string[] {
   const violations: string[] = []
   for (const rel of relPaths) {
     if (rel === 'README.md' || rel === 'README.zh.md') continue
+    if (isSupplementPath(rel)) continue
     if (parseNotePath(rel) === null) {
       violations.push(
         `unclassifiable note path: ${rel} (expected {lifecycle}/{class}/yyyy-mm-dd-topic.md` +

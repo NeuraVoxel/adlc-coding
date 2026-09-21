@@ -1,6 +1,6 @@
 # AGENTS.md
 
-adlc-coding — an AI work-paradigm and workflow kit: the paradigms and workflow skills plus a verified engineering-rule system (layered AGENTS.md instructions, a `run-gates` aggregate, lefthook hooks, Agent Notes decision records). It is language-agnostic and ships no application code: any stack adopts the rule set through `adopt` and keeps its own root. The gate system is orchestrated solely by `scripts/run-gates.ts`. Read [docs/architecture.md](docs/architecture.md) before changing source. Each module subtree (`packages/`, `scripts/`) carries its own `AGENTS.md` supplementing these rules; read it before working in that tree.
+adlc-coding — an AI work-paradigm and workflow kit: the paradigms and workflow skills plus a verified engineering-rule system (layered AGENTS.md instructions, a `run-gates` aggregate, lefthook hooks, Agent Notes decision records). It is language-agnostic and ships no application code: any stack adopts the rule set through `adopt` and keeps its own root. The gate system is orchestrated solely by `scripts/run-gates.ts`. Read [docs/architecture.md](docs/architecture.md) before changing source. Each module subtree (`packages/`, `scripts/`, `.agents/notes/`) carries its own `AGENTS.md` supplementing these rules; read it before working in that tree.
 
 ## Commands
 

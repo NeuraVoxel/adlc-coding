@@ -26,8 +26,13 @@ export const pairedRootFiles: readonly string[] = [
  * Explicit, justified exemptions from pairing. Kept here so the
  * English-only policy is machine-checkable the day the corpus grows.
  */
+const AGENT_SUPPLEMENT_REASON = 'agent-facing standing orders; English-only bounds model context'
+
 export const pairingExemptions: Readonly<Record<string, string>> = {
-  'AGENTS.md': 'agent-facing standing orders; English-only bounds model context',
+  'AGENTS.md': AGENT_SUPPLEMENT_REASON,
+  '.agents/notes/AGENTS.md': AGENT_SUPPLEMENT_REASON,
+  '.agents/notes/implemented/AGENTS.md': AGENT_SUPPLEMENT_REASON,
+  '.agents/notes/archived/AGENTS.md': AGENT_SUPPLEMENT_REASON,
 }
 
 const toCounterpart = (path: string): string => path.replace(/\.md$/, '.zh.md')

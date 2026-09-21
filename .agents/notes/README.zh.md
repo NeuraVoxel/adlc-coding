@@ -10,18 +10,35 @@
 
 - **lifecycle**（顶层目录）是状态，Note 随状态在目录间移动：
   - `proposed/`——已评审、未实施的提案。
-  - `implemented/`——决策已上线；文件记录决策与被否决的替代方案，并**与实际交付保持同步**：代码后续移动文件、改名、改默认值时，同一变更内更新对应事实（只改事实，不改决策本身）。
+  - `implemented/`——决策已上线；文件记录决策与被否决的替代方案，并**与实际交付保持同步**（[`implemented/AGENTS.md`](implemented/AGENTS.md)）：代码后续移动文件、改名、改默认值时，同一变更内更新对应事实（只改事实，不改决策本身）。
   - `rejected/`——考虑过并否决；裁决写在 `Status:` 行，提案原样冻结。
   - `archived/`——理由不再指导未来工作的已交付决策；append-only 冻结历史，绝非现行权威。
-- **class**（嵌套目录）是决策类别，封闭集合：`feature` / `bug-fix` / `simplification` / `architecture` / `process` / `testing`。新增类别须在同一变更内扩展门禁脚本的 `CLASSES` 并更新本节。
+- **class**（嵌套目录）是决策类别，封闭集合——每一类覆盖什么写在 [Classification](#classification)。新增类别须在同一变更内扩展门禁脚本的 `CLASSES` 并更新该节。
 
-日期是主题**首次提出**的日期（以 git 历史为准）。Note 之间用相对 Markdown 链接互引，不用裸文件名或编号。不设集中索引；活跃目录树就是清单。
+日期是主题**首次提出**的日期（以 git 历史为准）。Note 之间用相对 Markdown 链接互引，不用裸文件名或编号。不设集中索引：索引把每条 Note 的一句话主张重抄一遍，并在 Note 移动生命周期或类别的瞬间开始漂移；活跃目录树**就是**清单，一次 `ls` 即可遍历。门禁在结构上给出同一结论：notes 根目录下除 README 双语对和下列补充文件外的任何文件都无法通过分类，因此自动生成的 `INDEX.md` 活不过这道门禁。
+
+只在本树内生效的环境指令放在英文单语的补充文件里——[`AGENTS.md`](AGENTS.md)、[`implemented/AGENTS.md`](implemented/AGENTS.md)、[`archived/AGENTS.md`](archived/AGENTS.md)——每份只承载 README 承载不了的一条规则，并指回 README 而不是重抄它。分类门禁放行它们；配对门禁豁免它们，与豁免根 `AGENTS.md` 同理。
+
+## Classification
+
+每条 Note 归属一个写进路径的类别，取自 `scripts/agent-note-tree.ts` 强制的封闭集合；分类门禁拒绝其它目录。
+
+| 类别 | 覆盖什么 |
+|---|---|
+| `feature` | 新的用户或模型可见能力。 |
+| `bug-fix` | 修正缺陷，或补上评审/复盘暴露的缺口。 |
+| `simplification` | 删掉代码、行为或表面接口，而不新增能力。 |
+| `architecture` | 关于**所交付源码**的结构决策——包如何关联、运行时词汇是什么。 |
+| `process` | 代码**周围**的工具、策略或工作流——门禁、钩子、安装器——而非运行时行为。 |
+| `testing` | 测试基础设施与策略。 |
+
+`architecture` 与 `process` 的分界需要判断：architecture 关乎我们交付的源码，process 是围绕它的工具与工作流。`refactor` 故意缺席——它与 `simplification` 重叠，而后者的判别问句「可观察行为是否改变」已经把它覆盖。
 
 ## 归档与删除
 
 当已交付的决策完整、其理由不再可能指导未来工作时归档该 implemented Note；校准的问法是：这里是否有某个替代方案、所有权边界、负面保证、持久语义规则或重新引入条件，仍能防止一个可能犯的错——绝不用字数、年龄或配额衡量。绝不归档 proposed Note：过时就转 rejected。rejected Note 只在其理由还能防止一个可能犯的错时保留，否则整体删除。
 
-归档把完整的英/中对移入 `archived/{class}/`，保留 `Status: implemented`，在两个文件的状态行下方插入 `Archived: YYYY-MM-DD`，并修复或删除入链——这是归档允许的全部内容变更。封存后永久冻结：[`verify-archived-agent-notes`](../../scripts/verify-archived-agent-notes.ts) 将每个归档文件与 append-only manifest（`scripts/archived-notes.manifest.json`）中的哈希比对，任何后续编辑、移动或删除都会挂门禁。只在新增归档的同一变更内重新记录 manifest。
+归档把完整的英/中对移入 `archived/{class}/`，保留 `Status: implemented`，在两个文件的状态行下方插入 `Archived: YYYY-MM-DD`，并修复或删除入链——这是归档允许的全部内容变更。归档 Note 的**出链**永不被检查、校验或修复：它们随封存一起冻结，现行门禁不负责评判历史。[`archived/AGENTS.md`](archived/AGENTS.md) 是封存之后的冻结契约。封存后永久冻结：[`verify-archived-agent-notes`](../../scripts/verify-archived-agent-notes.ts) 将每个归档文件与 append-only manifest（`scripts/archived-notes.manifest.json`）中的哈希比对，任何后续编辑、移动或删除都会挂门禁。只在新增归档的同一变更内重新记录 manifest。
 
 ## 何时写一条
 

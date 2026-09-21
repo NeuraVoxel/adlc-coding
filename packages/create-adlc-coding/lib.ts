@@ -6,7 +6,14 @@
 
 /** Installable rule components, each mapping to repo-relative file paths. */
 export const COMPONENTS = {
-  rules: ['AGENTS.md', '.agents/notes/README.md', '.agents/notes/README.zh.md'],
+  rules: [
+    'AGENTS.md',
+    '.agents/notes/README.md',
+    '.agents/notes/README.zh.md',
+    '.agents/notes/AGENTS.md',
+    '.agents/notes/implemented/AGENTS.md',
+    '.agents/notes/archived/AGENTS.md',
+  ],
   gates: [
     'lefthook.yml',
     '.oxlintrc.json',
