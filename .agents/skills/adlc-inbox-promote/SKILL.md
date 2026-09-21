@@ -48,7 +48,7 @@ In `## Proposal` (or a nearby line), link back to the spark with a relative path
 6. Update the matching `QUEUE.md` row to `[x]` and append `→ [Agent Note](<relative path>)`; the row stays in its group and the ID tag stays.
 7. Satisfy the notes README skeleton; the note-format gate rejects drifted sections once introduced.
 8. Report the spark path, the chosen class with its reason, the Agent Note path, and the QUEUE line. Do **not** commit unless the user asks.
-9. Ask one question and stop: is this proposal accepted, and should implementation start? Name what implementing would touch, drawn from the note's Proposal and Acceptance criteria, so a yes is informed. Wait for the answer: silence, a deferral, or a no ends the run; a yes starts implementation in the same session, still without `git commit` or `git push` unless those are separately requested. When a turn promotes several sparks, one question after the last report covers them all.
+9. Ask one question and stop: is this proposal accepted, and should implementation start? Name what implementing would touch, drawn from the note's Proposal and Acceptance criteria, so a yes is informed. Wait for the answer: silence, a deferral, or a no ends the run; a yes starts implementation in the same session, following [adlc-implement](../adlc-implement/SKILL.md) from its step 4 — which is why its step 3 does not ask again — and still without `git commit` or `git push` unless those are separately requested. When a turn promotes several sparks, one question after the last report covers them all.
 
 ## Hard stops
 

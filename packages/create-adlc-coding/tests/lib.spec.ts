@@ -1,18 +1,26 @@
-import { readFileSync } from 'node:fs'
+import { execFileSync } from 'node:child_process'
+import { existsSync, readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { describe, expect, it } from 'vitest'
-import { collectReferences } from '../../../scripts/verify-doc-references.ts'
+import { collectReferences, resolveReference } from '../../../scripts/verify-doc-references.ts'
 import {
   applyRenames,
   COMPONENT_REQUIRES,
   COMPONENTS,
   findMissingComponents,
-  isExcluded,
+  findUnlistedRootFiles,
+  isCarried,
+  isLinkSurface,
   isRenamable,
   mergeScripts,
   pruneExcludedReferences,
   resolveComponents,
   RUNNER_SCRIPTS,
+  SCAFFOLD_ONLY_FILES,
+  SCAFFOLD_TEMPLATES,
+  scaffoldChangeLog,
+  scaffoldFileSet,
+  scaffoldPackageJson,
   type ComponentName,
 } from '../lib.ts'
 
@@ -32,21 +40,105 @@ describe('resolveComponents', () => {
   })
 })
 
-describe('isExcluded', () => {
-  it('excludes git, dependency, build-output, and installer paths', () => {
-    expect(isExcluded('.git/config')).toBe(true)
-    expect(isExcluded('apps/web/node_modules/react/index.js')).toBe(true)
-    expect(isExcluded('apps/web/dist/index.html')).toBe(true)
-    expect(isExcluded('apps/web/coverage/out.txt')).toBe(true)
-    expect(isExcluded('pnpm-lock.yaml')).toBe(true)
-    expect(isExcluded('packages/create-adlc-coding/lib.ts')).toBe(true)
+describe('scaffoldFileSet', () => {
+  it('carries every component file plus the scaffold-only paths', () => {
+    const files = scaffoldFileSet()
+    expect(files).toStrictEqual([...files].sort())
+    for (const name of Object.keys(COMPONENTS) as ComponentName[]) {
+      expect(files).toEqual(expect.arrayContaining([...COMPONENTS[name]]))
+    }
+    expect(files).toEqual(expect.arrayContaining([...SCAFFOLD_ONLY_FILES]))
   })
 
-  it('keeps source and rule files', () => {
-    expect(isExcluded('server/src/app.ts')).toBe(false)
-    expect(isExcluded('AGENTS.md')).toBe(false)
-    expect(isExcluded('packages/contracts/src/index.ts')).toBe(false)
-    expect(isExcluded('')).toBe(false)
+  it('names only paths this checkout actually holds', () => {
+    for (const file of scaffoldFileSet()) {
+      expect(existsSync(resolve(kitRoot, file)), file).toBe(true)
+    }
+  })
+
+  it('excludes this repository\'s own record while keeping the shipped contracts', () => {
+    // The acceptance case: what belongs to this repository and to nothing else.
+    expect(isCarried('.agents/notes/implemented/process/2026-09-21-adlc-research-tree-and-prefix-rule.md')).toBe(false)
+    expect(isCarried('.agents/notes/implemented/process/2026-09-21-adlc-research-tree-and-prefix-rule.zh.md')).toBe(false)
+    expect(isCarried('.agents/inbox/2026-09-21-integrate-research-skill.md')).toBe(false)
+    expect(isCarried('.agents/learning/2026-09-21-adlc-flow-with-issue-channel.md')).toBe(false)
+    expect(isCarried('packages/create-adlc-coding/lib.ts')).toBe(false)
+    expect(isCarried('pnpm-lock.yaml')).toBe(false)
+    // The lifecycle supplement ships through `rules`; the class directories do not.
+    expect(isCarried('.agents/notes/implemented/AGENTS.md')).toBe(true)
+    expect(isCarried('.agents/notes/proposed')).toBe(false)
+    expect(isCarried('.agents/inbox/QUEUE.md')).toBe(true)
+    expect(isCarried('.agents/skills/adlc-implement/SKILL.md')).toBe(true)
+  })
+
+  it('carries a directory the set holds files under', () => {
+    expect(isCarried('.agents/skills')).toBe(true)
+    expect(isCarried('docs')).toBe(true)
+    expect(isCarried('packages')).toBe(false)
+  })
+})
+
+describe('findUnlistedRootFiles', () => {
+  it('rejects a root file that must ship but is missing from the set', () => {
+    const set = scaffoldFileSet().filter(file => file !== 'vitest.config.ts')
+    expect(findUnlistedRootFiles(['package.json', 'vitest.config.ts'], set)).toEqual([
+      'vitest.config.ts is neither carried by a component nor listed in SCAFFOLD_ONLY_FILES',
+    ])
+  })
+
+  it('accepts a complete set and the root paths a scaffold deliberately skips', () => {
+    expect(findUnlistedRootFiles(scaffoldFileSet(), scaffoldFileSet())).toEqual([])
+    expect(findUnlistedRootFiles(['README.md', 'LICENSE', 'pnpm-lock.yaml'], scaffoldFileSet())).toEqual([])
+  })
+
+  it('accounts for every root file this repository tracks', () => {
+    // A subprocess boundary: splitting git's output leaves a trailing empty line.
+    const tracked = execFileSync('git', ['ls-files'], { cwd: kitRoot, encoding: 'utf8' })
+      .split('\n')
+      .filter(Boolean)
+    expect(findUnlistedRootFiles(tracked, scaffoldFileSet())).toEqual([])
+  })
+
+  it('checks root paths only', () => {
+    expect(findUnlistedRootFiles(['docs/unlisted.md'], scaffoldFileSet())).toEqual([])
+  })
+})
+
+describe('SCAFFOLD_TEMPLATES', () => {
+  it('templates only paths the scaffold writes', () => {
+    const files = new Set(scaffoldFileSet())
+    for (const path of Object.keys(SCAFFOLD_TEMPLATES)) expect(files.has(path), path).toBe(true)
+  })
+})
+
+describe('scaffoldChangeLog', () => {
+  it('keeps the header and the Unreleased heading, cutting this kit\'s history', () => {
+    const trimmed = scaffoldChangeLog(
+      '# Changelog\n\nIntro.\n\n## Unreleased\n\n### Added\n\n- ours.\n\n## [1.0.0] — 2026-09-20\n\n- older.\n',
+    )
+    expect(trimmed).toBe('# Changelog\n\nIntro.\n\n## Unreleased\n')
+  })
+
+  it('refuses a changelog with no cut point instead of shipping one whole', () => {
+    expect(() => scaffoldChangeLog('# Changelog\n\n## [1.0.0] — 2026-09-20\n')).toThrow(
+      /no "## Unreleased" heading/,
+    )
+  })
+})
+
+describe('scaffoldPackageJson', () => {
+  it('drops the kit\'s own create script and keeps the rest', () => {
+    const scaffolded = JSON.parse(
+      scaffoldPackageJson(
+        JSON.stringify({ name: 'adlc-coding', scripts: { create: 'tsx packages/create-adlc-coding/bin.ts', test: 'vitest run' } }, null, 2),
+      ),
+    ) as { scripts: Record<string, string> }
+    expect(scaffolded.scripts.create).toBeUndefined()
+    expect(scaffolded.scripts.test).toBe('vitest run')
+  })
+
+  it('leaves a manifest without scripts alone', () => {
+    expect(JSON.parse(scaffoldPackageJson('{"name":"x"}'))).toStrictEqual({ name: 'x' })
   })
 })
 
@@ -56,6 +148,15 @@ describe('isRenamable', () => {
     expect(isRenamable('README.md')).toBe(true)
     expect(isRenamable('pnpm-lock.yaml')).toBe(true)
     expect(isRenamable('.gitignore')).toBe(false)
+  })
+})
+
+describe('isLinkSurface', () => {
+  it('unwraps references in documents only, never in code or config', () => {
+    expect(isLinkSurface('docs/architecture.md')).toBe(true)
+    expect(isLinkSurface('.agents/skills/adlc-implement/SKILL.md')).toBe(true)
+    expect(isLinkSurface('scripts/verify-doc-references.spec.ts')).toBe(false)
+    expect(isLinkSurface('package.json')).toBe(false)
   })
 })
 
@@ -87,25 +188,40 @@ describe('applyRenames', () => {
 })
 
 describe('pruneExcludedReferences', () => {
-  const resolve = (target: string): string | null =>
-    /^[a-z]+:/i.test(target) ? null : target.replace(/^\//, '')
+  const from = 'AGENTS.md'
+  const prune = (content: string): string =>
+    pruneExcludedReferences(content, target => resolveReference(from, target))
 
-  it('unwraps a link into an excluded path and keeps its text', () => {
-    expect(
-      pruneExcludedReferences(
-        'Details: [installer README](packages/create-adlc-coding/README.md).',
-        resolve,
-      ),
-    ).toBe('Details: installer README.')
+  it('unwraps a link into the installer package and keeps its text', () => {
+    expect(prune('Details: [installer README](packages/create-adlc-coding/README.md).')).toBe(
+      'Details: installer README.',
+    )
   })
 
-  it('unwraps an image into an excluded path', () => {
-    expect(pruneExcludedReferences('![lock](pnpm-lock.yaml)', resolve)).toBe('lock')
+  it('unwraps an image into the lockfile', () => {
+    expect(prune('![lock](pnpm-lock.yaml)')).toBe('lock')
   })
 
-  it('keeps references the copy ships and references that are external', () => {
+  it('unwraps a kit-history link into a note the scaffold does not carry', () => {
+    const link = '[pairing decision](.agents/notes/implemented/process/2026-09-15-bilingual-doc-pairing.md)'
+    expect(prune(link)).toBe('pairing decision')
+  })
+
+  it('keeps references the scaffold ships and references that are external', () => {
     const shipped = 'See [architecture](docs/architecture.md) and [web](https://example.com/x.md).'
-    expect(pruneExcludedReferences(shipped, resolve)).toBe(shipped)
+    expect(prune(shipped)).toBe(shipped)
+  })
+
+  it('leaves every remaining link in a shipped document pointing at a path the scaffold writes', () => {
+    for (const file of scaffoldFileSet().filter(path => path.endsWith('.md'))) {
+      const pruned = pruneExcludedReferences(
+        readFileSync(resolve(kitRoot, file), 'utf8'),
+        target => resolveReference(file, target),
+      )
+      for (const { target } of collectReferences(new Map([[file, pruned]]))) {
+        expect(isCarried(target), `${file} keeps a link to ${target}`).toBe(true)
+      }
+    }
   })
 })
 

@@ -23,7 +23,7 @@ pnpm run create -- new ../my-app --name my-app
 pnpm run create -- adopt ../existing-app --only rules,gates,docs,workflows,ci
 ```
 
-`new` 会拷贝除 `.git`、`node_modules`、构建产物和 lockfile 之外的一切，把 `adlc-coding` 改名为 `--name`，并重建 `CLAUDE.md` 别名。`adopt` 不加 `--force` 时拒绝覆盖已有文件，会把缺失的 runner 脚本合并进 `package.json`，并打印门禁所依赖的前置条件。详见[安装器 README](packages/create-adlc-coding/README.md)。
+`new` 写出的是一份组件拷贝，而不是整仓拷贝：新项目拿到的是整套规范——`adopt` 会装的那些组件，外加新项目必需的根清单、工具配置与 `scripts/` supplement——而本仓库自己的 notes、spark、learning 与 changelog 历史留在原处。它把 `adlc-coding` 改名为 `--name`，并重建 `CLAUDE.md` 别名。`adopt` 不加 `--force` 时拒绝覆盖已有文件，会把缺失的 runner 脚本合并进 `package.json`，并打印门禁所依赖的前置条件。详见[安装器 README](packages/create-adlc-coding/README.md)。
 
 ## 目录
 
@@ -34,7 +34,7 @@ pnpm run create -- adopt ../existing-app --only rules,gates,docs,workflows,ci
 | `docs/` | 架构地图、测试策略、发版合同 |
 | `.agents/notes/` | 决策记录（Agent Notes） |
 | `.agents/inbox/`、`.agents/learning/`、`.agents/research/` | 灵感排队（`QUEUE.md` 排队板）、会话复盘与研究笔记（带来源引用） |
-| `.agents/skills/` | 本 kit 发布的 `adlc-*` 技能（inbox 捕获/升格/查看、学习笔记、研究、发版） |
+| `.agents/skills/` | 本 kit 发布的 `adlc-*` 技能（inbox 捕获/升格/查看、实施、学习笔记、研究、发版） |
 | `.claude/skills/`、`.codebuddy/skills/` | 指向 `.agents/skills` 的符号链接别名——Claude Code、CodeBuddy Code 与 zcode 只在此处发现项目技能 |
 
 文档以英文为主档，配 `.zh.md` 中文对照；`pnpm run doc-sync` 拒绝两侧漂移。`AGENTS.md`（面向 agent）仅英文。

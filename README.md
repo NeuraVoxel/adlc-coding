@@ -23,7 +23,7 @@ pnpm run create -- new ../my-app --name my-app
 pnpm run create -- adopt ../existing-app --only rules,gates,docs,workflows,ci
 ```
 
-`new` copies everything except `.git`, `node_modules`, build output, and the lockfile, renames `adlc-coding` to `--name`, and recreates the `CLAUDE.md` alias. `adopt` never overwrites without `--force`, merges the missing runner scripts into `package.json`, and prints the prerequisites the gates assume. Details: [installer README](packages/create-adlc-coding/README.md).
+`new` writes a component copy, not a checkout copy: the new project receives the rule set — the components `adopt` installs, plus the root manifest, tool configuration, and `scripts/` supplement a fresh project needs — while this repository keeps its own notes, sparks, learning, and changelog history. It renames `adlc-coding` to `--name` and recreates the `CLAUDE.md` alias. `adopt` never overwrites without `--force`, merges the missing runner scripts into `package.json`, and prints the prerequisites the gates assume. Details: [installer README](packages/create-adlc-coding/README.md).
 
 ## Layout
 
@@ -34,7 +34,7 @@ pnpm run create -- adopt ../existing-app --only rules,gates,docs,workflows,ci
 | `docs/` | Architecture map, testing strategy, release contract |
 | `.agents/notes/` | Decision records (Agent Notes) |
 | `.agents/inbox/`, `.agents/learning/`, `.agents/research/` | Spark queue (`QUEUE.md` board), session retrospectives, and cited research notes |
-| `.agents/skills/` | The `adlc-*` skills this kit ships (inbox capture/promote/view, learning note, research, release) |
+| `.agents/skills/` | The `adlc-*` skills this kit ships (inbox capture/promote/view, implement, learning note, research, release) |
 | `.claude/skills/`, `.codebuddy/skills/` | Symlink aliases to `.agents/skills` — Claude Code, CodeBuddy Code, and zcode discover project skills only here |
 
 Docs are English-primary with `.zh.md` Chinese counterparts; `pnpm run doc-sync` rejects drift. `AGENTS.md` (agent-facing) is English-only.

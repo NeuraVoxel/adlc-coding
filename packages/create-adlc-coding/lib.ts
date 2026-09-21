@@ -1,7 +1,8 @@
 /**
- * Pure planning logic for the adlc-coding installer: component selection,
- * copy exclusion, identity renames, and package-script merging. No I/O lives
- * here, so the acceptance paths are testable directly.
+ * Pure planning logic for the adlc-coding installer: component selection, the
+ * scaffold file set, identity renames, scaffold content templates, and
+ * package-script merging. No I/O lives here, so the acceptance paths are
+ * testable directly.
  */
 
 /** Installable rule components, each mapping to repo-relative file paths. */
@@ -49,6 +50,7 @@ export const COMPONENTS = {
     '.agents/skills/adlc-inbox-capture/SKILL.md',
     '.agents/skills/adlc-inbox-promote/SKILL.md',
     '.agents/skills/adlc-inbox-view/SKILL.md',
+    '.agents/skills/adlc-implement/SKILL.md',
     '.agents/skills/adlc-learning-note/SKILL.md',
     '.agents/skills/adlc-research/SKILL.md',
     '.agents/skills/adlc-release/SKILL.md',
@@ -101,11 +103,136 @@ export function findMissingComponents(names: readonly ComponentName[]): string[]
   return missing
 }
 
-/** Directory segments excluded from a whole-checkout copy. */
-export const SEGMENT_EXCLUDES: readonly string[] = ['.git', 'node_modules', 'dist', 'coverage']
+/**
+ * Root and subtree files a fresh scaffold needs and no component carries: the
+ * project manifest and its tool configuration, plus the supplement for the one
+ * subtree that ships. `packages/` is absent on purpose — its supplement
+ * documents the installer, which a scaffold does not carry — and a new project
+ * adds its own supplement when it creates that tree.
+ *
+ * `scripts/CLAUDE.md` is copied like the rest of the set and then recreated as
+ * a relative alias: `fs.cp` materializes a copied symlink with an absolute
+ * target pointing back at this checkout.
+ */
+export const SCAFFOLD_ONLY_FILES: readonly string[] = [
+  '.gitignore',
+  'package.json',
+  'pnpm-workspace.yaml',
+  'scripts/AGENTS.md',
+  'scripts/CLAUDE.md',
+  'tsconfig.base.json',
+  'tsconfig.tools.json',
+  'vitest.config.ts',
+]
 
-/** Exact repo-relative paths excluded from a whole-checkout copy. */
-export const PATH_EXCLUDES: readonly string[] = ['pnpm-lock.yaml', 'packages/create-adlc-coding']
+/**
+ * Root paths a scaffold deliberately does not carry.
+ *
+ * A new project writes its own README pair and licence, resolves its own
+ * dependency graph, and receives `CLAUDE.md` as a created alias rather than a
+ * copied file. Every other root path this checkout holds has to reach the new
+ * project through a component or `SCAFFOLD_ONLY_FILES`; `findUnlistedRootFiles`
+ * is what makes the next added root file fail here rather than disappear.
+ */
+export const NOT_CARRIED_ROOT_PATHS: readonly string[] = [
+  'CLAUDE.md',
+  'LICENSE',
+  'README.md',
+  'README.zh.md',
+  'pnpm-lock.yaml',
+]
+
+/**
+ * Every path a fresh scaffold writes, sorted.
+ *
+ * One source serves both modes: what `adopt` can install is what `new` ships.
+ * This repository's own records — its Agent Notes, sparks, retrospectives —
+ * reach the set only through a component that names them, and none does.
+ * @returns repo-relative posix paths: the union of `COMPONENTS` and
+ * `SCAFFOLD_ONLY_FILES`.
+ */
+export function scaffoldFileSet(): string[] {
+  const files = new Set<string>(SCAFFOLD_ONLY_FILES)
+  for (const component of Object.values(COMPONENTS)) {
+    for (const file of component) files.add(file)
+  }
+  return [...files].sort()
+}
+
+/**
+ * Whether a scaffold carries a path.
+ *
+ * True for a file in the set and for a directory the set has files under, so a
+ * link to a shipped directory survives while a link into this repository's own
+ * record does not.
+ * @param relPosixPath - repo-relative posix path, already normalized.
+ * @returns true when the path or its subtree reaches the new project.
+ */
+export function isCarried(relPosixPath: string): boolean {
+  return scaffoldFileSet().some(
+    file => file === relPosixPath || file.startsWith(`${relPosixPath}/`),
+  )
+}
+
+/**
+ * Root paths that must ship but are missing from a scaffold file set.
+ * @param rootPaths - repo-relative paths found at a checkout's root.
+ * @param fileSet - the set under test.
+ * @returns one message per root path the set neither carries nor declares
+ * uncarried; empty when the set is complete.
+ */
+export function findUnlistedRootFiles(
+  rootPaths: readonly string[],
+  fileSet: readonly string[],
+): string[] {
+  const carried = new Set(fileSet)
+  return rootPaths
+    .filter(path => !path.includes('/'))
+    .filter(path => !carried.has(path) && !NOT_CARRIED_ROOT_PATHS.includes(path))
+    .sort()
+    .map(path => `${path} is neither carried by a component nor listed in SCAFFOLD_ONLY_FILES`)
+}
+
+/**
+ * The scaffold's `ChangeLog.md`: the release contract's header and the
+ * `## Unreleased` heading a cut renames, without this kit's history — a new
+ * project's changelog records its own changes, not ours.
+ * @param content - the kit's `ChangeLog.md`.
+ * @returns the content up to and including the `## Unreleased` heading.
+ * @throws when that heading is absent, since the template then has no cut
+ * point and the adopter would receive unreleased history as their own.
+ */
+export function scaffoldChangeLog(content: string): string {
+  const lines = content.split('\n')
+  const heading = lines.indexOf('## Unreleased')
+  if (heading === -1) {
+    throw new Error('create-adlc-coding: ChangeLog.md carries no "## Unreleased" heading to cut at.')
+  }
+  return `${lines.slice(0, heading + 1).join('\n')}\n`
+}
+
+/**
+ * The scaffold's `package.json`: the kit's own `create` script removed, because
+ * it invokes an installer package a scaffold deliberately does not carry.
+ * @param content - the kit's `package.json`.
+ * @returns the manifest without that script, formatted like its source.
+ * @throws when the content is not valid JSON.
+ */
+export function scaffoldPackageJson(content: string): string {
+  const manifest = JSON.parse(content) as { scripts?: Record<string, string> }
+  if (manifest.scripts !== undefined) delete manifest.scripts.create
+  return `${JSON.stringify(manifest, null, 2)}\n`
+}
+
+/**
+ * Files whose scaffold content is not the kit's own, keyed by repo-relative
+ * path. Every key has to be in `scaffoldFileSet()`; `lib.spec.ts` checks that,
+ * so a template for a path nobody ships cannot sit here unread.
+ */
+export const SCAFFOLD_TEMPLATES: Readonly<Record<string, (content: string) => string>> = {
+  'ChangeLog.md': scaffoldChangeLog,
+  'package.json': scaffoldPackageJson,
+}
 
 /** Root scripts the gates invoke; adoption adds the ones the target lacks. */
 export const RUNNER_SCRIPTS: Readonly<Record<string, string>> = {
@@ -136,28 +263,25 @@ export function resolveComponents(only: string | undefined): ComponentName[] {
 }
 
 /**
- * Whether a repo-relative path is excluded from a whole-checkout copy.
- * @param relPosixPath - repo-relative posix path; empty means the copy root.
- * @returns true when the file or its directory subtree is excluded.
- */
-export function isExcluded(relPosixPath: string): boolean {
-  if (relPosixPath === '') return false
-  const segments = relPosixPath.split('/')
-  return (
-    segments.some(segment => SEGMENT_EXCLUDES.includes(segment)) ||
-    PATH_EXCLUDES.some(
-      exclude => relPosixPath === exclude || relPosixPath.startsWith(`${exclude}/`),
-    )
-  )
-}
-
-/**
  * Whether a file receives identity renames during a fresh scaffold.
  * @param relPosixPath - repo-relative posix path of the file.
  * @returns true for text surfaces carrying kit identity strings.
  */
 export function isRenamable(relPosixPath: string): boolean {
   return TEXT_SUFFIXES.some(suffix => relPosixPath.endsWith(suffix))
+}
+
+/**
+ * Whether a file receives Markdown link unwrapping.
+ *
+ * A reference is a Markdown construct, so the rule stops at `.md`. Run over a
+ * `.ts` or `.json` surface it rewrites markdown-shaped string literals — a gate
+ * spec's own link fixtures — and the copy fails its own test suite.
+ * @param relPosixPath - repo-relative posix path of the file.
+ * @returns true for the surfaces that carry references.
+ */
+export function isLinkSurface(relPosixPath: string): boolean {
+  return relPosixPath.endsWith('.md')
 }
 
 /** The target identity a fresh scaffold renames the kit's placeholder to. */
@@ -191,26 +315,28 @@ export function applyRenames(content: string, identities: RenameIdentities): str
 }
 
 /**
- * Unwrap Markdown links whose target the copy excludes.
+ * Unwrap Markdown links whose target the scaffold does not carry.
  *
- * A scaffold omits the installer package and the lockfile, so a shipped
- * document that links them would reference a path the target never received.
- * Unwrapping keeps the link text as prose and drops only the reference; the
- * link target itself is left alone, so kit-history links to files the scaffold
- * does ship keep working.
+ * A shipped document that links this repository's own record — an Agent Note,
+ * a spark, the installer package, the lockfile — would otherwise reference a
+ * path the target never received. Unwrapping keeps the link text as prose and
+ * drops only the reference; a link between two shipped files is left alone, so
+ * the references a new project can actually follow survive.
  * @param content - file content.
  * @param resolveTarget - maps a link target to a repo-relative path; null when external.
- * @returns the content with excluded references unwrapped.
+ * @param carried - predicate over repo-relative paths, defaulting to `isCarried`.
+ * @returns the content with uncarried references unwrapped.
  */
 export function pruneExcludedReferences(
   content: string,
   resolveTarget: (target: string) => string | null,
+  carried: (resolved: string) => boolean = isCarried,
 ): string {
   return content.replace(
     /!?\[([^\]]*)\]\(([^)\s]+)\)/g,
     (match, text: string, target: string) => {
       const resolved = resolveTarget(target)
-      return resolved !== null && isExcluded(resolved) ? text : match
+      return resolved !== null && !carried(resolved) ? text : match
     },
   )
 }

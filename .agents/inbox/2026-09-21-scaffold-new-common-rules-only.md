@@ -4,7 +4,7 @@ Status: promoted
 Type: feature
 ID: Feat-0004
 
-→ [Agent Note](../notes/proposed/feature/2026-09-21-scaffold-new-common-rules-only.md)
+→ [Agent Note](../notes/implemented/feature/2026-09-21-scaffold-new-common-rules-only.md)
 
 ## Spark
 
