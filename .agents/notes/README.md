@@ -79,7 +79,7 @@ Proposal-era headings (`## Proposal`, `## Plan`, `## Migration plan`, `## Accept
 
 ### Alternatives considered is mandatory
 
-Every note carries an `## Alternatives considered` section: each genuine alternative and why it lost. A decision recorded without its opponents invites re-litigation — the failure notes exist to prevent. Notes dated before the format gate whose alternatives are not reconstructible carry the exact comment `<!-- agent-note-format: alternatives-not-recorded (pre-format Agent Note) -->` in its place.
+Every note carries an `## Alternatives considered` section: each genuine alternative and why it lost. A decision recorded without its opponents invites re-litigation — the failure notes exist to prevent. Notes dated before the format gate took effect (2026-09-20) whose alternatives are not reconstructible carry the exact comment `<!-- agent-note-format: alternatives-not-recorded (pre-format Agent Note) -->` in its place; the format gate accepts that comment only for a note dated before that day, so a note written now records its alternatives for real.
 
 ### Moving between lifecycles
 

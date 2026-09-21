@@ -79,7 +79,7 @@ archived:     封存时的 implemented 骨架，外加 Archived: 行
 
 ### Alternatives considered 强制存在
 
-每个 Note 必须携带 `## Alternatives considered`：每个真实替代方案及落败原因。没有记录对手的决策会招来重新争论——这正是 Note 存在要防止的事。早于格式门禁、替代方案不可复原的 Note，以精确注释 `<!-- agent-note-format: alternatives-not-recorded (pre-format Agent Note) -->` 代替该节。
+每个 Note 必须携带 `## Alternatives considered`：每个真实替代方案及落败原因。没有记录对手的决策会招来重新争论——这正是 Note 存在要防止的事。早于格式门禁生效日（2026-09-20）、替代方案不可复原的 Note，以精确注释 `<!-- agent-note-format: alternatives-not-recorded (pre-format Agent Note) -->` 代替该节；格式门禁只对早于该日期的 Note 放行该注释，因此现在新写的 Note 必须真实记录替代方案。
 
 ### 生命周期之间移动
 

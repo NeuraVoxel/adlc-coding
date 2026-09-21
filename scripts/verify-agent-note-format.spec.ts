@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { ALTERNATIVES_ESCAPE, findFormatViolations } from './verify-agent-note-format.ts'
+import { ALTERNATIVES_ESCAPE, FORMAT_ADOPTED, findFormatViolations } from './verify-agent-note-format.ts'
 
 const implementedNote = [
   '# Agent Note: sample',
@@ -100,6 +100,14 @@ describe('findFormatViolations', () => {
     expect(violations.join('\n')).toContain('missing "## Alternatives considered"')
     const escaped = `${stripped}\n${ALTERNATIVES_ESCAPE}\n`
     expect(findFormatViolations('implemented/process/2026-09-15-sample.md', escaped)).toEqual([])
+  })
+
+  it('rejects the escape comment once its adoption day has passed', () => {
+    const stripped = implementedNote.replace('## Alternatives considered\n- **Other**. Lost: reasons.\n\n', '')
+    const escaped = `${stripped}\n${ALTERNATIVES_ESCAPE}\n`
+    const violations = findFormatViolations('implemented/process/2026-09-20-sample.md', escaped)
+    expect(violations.join('\n')).toContain(`only valid for notes dated before ${FORMAT_ADOPTED}`)
+    expect(findFormatViolations('implemented/process/2026-09-19-sample.md', escaped)).toEqual([])
   })
 
   it('skips Chinese counterparts and unclassifiable paths', () => {

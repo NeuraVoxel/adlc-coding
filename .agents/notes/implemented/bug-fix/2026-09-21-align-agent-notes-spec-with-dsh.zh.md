@@ -18,6 +18,7 @@ Status: implemented
 | 按生命周期的补充文件 | 无，规则全部写在 README | `notes/AGENTS.md`（每条新 note 触发一次取代检查）、`implemented/AGENTS.md`（保持事实最新，不得改写判决）、`archived/AGENTS.md`（冻结契约，含「不得检查或修复归档 note 的出向链接」） | 已迁移 |
 | 根目录文件白名单 | `agent-note-tree.ts` 只豁免 README 双语对，根目录下的补充文件会被门禁拒掉 | 同一份库已允许根目录出现 `AGENTS.md` / `CLAUDE.md` | 作为使能改动迁移 |
 | Note 三元组 | 英语 + `.zh.md`，由 `verify-doc-pairing` 校验 | 英语 + `.zh.md` + 一份记录两侧 git blob 哈希的 `.i18n.yaml` sidecar，`archived/` 下强制 | 刻意分叉 |
+| 格式门禁的 grandfather 注释 | 替代方案逃逸注释对任何日期的 Note 都放行，新 Note 可以借此绕开强制要求 | `FORMAT_ADOPTED` 限定其范围：只对早于格式生效日的 Note 放行 | 已迁移 |
 | 归档冻结 | `verify-archived-agent-notes.ts` + `scripts/archived-notes.manifest.json`，文件内容 sha256，强制双语成对 | 同上思路，另加 git blob SHA-1、每条 note 的 sidecar 一致性记录、与 `HEAD` 的基线比对（可被 `DSH_ARCHIVE_BASE_REF` 覆盖）以及 `merge-translation-pairing` merge driver | 推迟 |
 | 禁止集中索引 | README 有说明；靠机制偶然达成 —— 树的门禁只白名单 README 双语对 | 写在文档里、在树库中显式禁止，并由专门的 note 承接理由 | 结论相同，现写明理由 |
 | Inbox 层 | `.agents/inbox/` 加 `adlc-inbox-*` skill，由安装器 `workflows` 组件下发 | 全仓没有 inbox 树，未成型想法停留在 chat 或 learning note | 刻意分叉 |
@@ -47,6 +48,6 @@ notes 树现在与 README 双语对并存着自身的 Agent 补充文件。`.age
 
 ## Consequences
 
-上表三行「已迁移」已经落地：README 双语对带上了 Classification 表、无索引的理由和归档链接规则；补充文件存在且两种语言都能到达；`pnpm run check:all` 全绿；`scripts/agent-note-tree.spec.ts` 拒绝 `INDEX.md`、`implemented/notes.md` 以及嵌套在生命周期更深层级的补充文件，同时接受三份真实补充文件；`scripts/verify-archived-agent-notes.spec.ts` 证明补充文件被跳过，而不会被报成未记录的封存内容。`pnpm run create -- adopt <tmp>` 会装上三份补充文件，因此被采用的工程一次拿到完整可信的 notes 治理。Bug-0002 依据本 note 结案。
+上表「已迁移」各行已经落地：README 双语对带上了 Classification 表、无索引的理由和归档链接规则；补充文件存在且两种语言都能到达；`pnpm run check:all` 全绿；`scripts/agent-note-tree.spec.ts` 拒绝 `INDEX.md`、`implemented/notes.md` 以及嵌套在生命周期更深层级的补充文件，同时接受三份真实补充文件；`scripts/verify-archived-agent-notes.spec.ts` 证明补充文件被跳过，而不会被报成未记录的封存内容。`pnpm run create -- adopt <tmp>` 会装上三份补充文件，因此被采用的工程一次拿到完整可信的 notes 治理。Bug-0002 依据本 note 结案。`verify-agent-note-format.ts` 现在导出 `FORMAT_ADOPTED = 2026-09-20` —— 即 notes 树与格式门禁落地之日 —— 并对任何日期在该日或之后的 Note 拒绝替代方案逃逸注释；`scripts/verify-agent-note-format.spec.ts` 在边界上证明该拒绝，并证明前一日仍然放行；README 双语对写明了这个日期。
 
 代价：notes 规则从一份文件变成四份，进入本树的 agent 要读 README 加适用的那份补充——因此每份补充只承载一条规则并指回 README，任何能在 README 里说清的规则都归 README。根目录不变量从「任何杂文件都挂」弱化为「两个具名文件放行」，所以那些拒绝用例是承重的，不是装饰。[`AGENTS.md`](../../AGENTS.md) 里的取代检查是人的步骤，没有门禁能证明它做过，跳过时只有 review 能发现。封存证明的仍是磁盘上的内容，而非与被封存 git blob 相等，历史改写对 `verify-archived-agent-notes` 依然不可见——这是推迟 sidecar 所付的代价，应在首次归档时重议。最后，本 note 只记录「调查日期」粒度的判定与形状，不抄 dsh 的逐行行为：否则刚刚治好的漂移会在对方源码变动时复发。
