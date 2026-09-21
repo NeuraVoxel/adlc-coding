@@ -10,7 +10,7 @@
 - [x] [Feat-0006] [QUEUE.md 按正序排列，不要倒序](./2026-09-21-queue-ascending-order.md) → [Agent Note](../notes/implemented/feature/2026-09-21-queue-ascending-order.md)
 - [x] [Feat-0007] [adlc-inbox-promote 升格完成后主动询问是否实施](./2026-09-21-promote-skill-ask-before-implement.md) → [Agent Note](../notes/implemented/feature/2026-09-21-promote-skill-ask-before-implement.md)
 - [x] [Feat-0008] [兼容 zcode agent 开发工具](./2026-09-21-zcode-agent-compat.md) → [Agent Note](../notes/implemented/feature/2026-09-21-zcode-agent-compat.md)
-- [ ] [Feat-0009] [skills 兼容主流 coding harness](./2026-09-21-skills-compat-coding-harnesses.md)
+- [x] [Feat-0009] [skills 兼容主流 coding harness](./2026-09-21-skills-compat-coding-harnesses.md) — 伪需求，关闭
 
 ## Bug
 

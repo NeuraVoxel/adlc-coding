@@ -1,6 +1,6 @@
 # Inbox: skills 兼容主流 coding harness
 
-Status: open
+Status: discarded — 伪需求，主动关闭
 Type: feature
 ID: Feat-0009
 
