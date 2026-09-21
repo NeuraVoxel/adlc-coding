@@ -2,7 +2,7 @@
 
 ## Feat
 
-- [x] [Feat-0007] [adlc-inbox-promote 升格完成后主动询问是否实施](./2026-09-21-promote-skill-ask-before-implement.md) → [Agent Note](../notes/proposed/feature/2026-09-21-promote-skill-ask-before-implement.md)
+- [x] [Feat-0007] [adlc-inbox-promote 升格完成后主动询问是否实施](./2026-09-21-promote-skill-ask-before-implement.md) → [Agent Note](../notes/implemented/feature/2026-09-21-promote-skill-ask-before-implement.md)
 - [ ] [Feat-0006] [QUEUE.md 按正序排列，不要倒序](./2026-09-21-queue-ascending-order.md)
 - [ ] [Feat-0005] [集成 research skill 到本 kit 的 skills 集合](./2026-09-21-integrate-research-skill.md)
 - [x] [Feat-0004] [脚手架 `create -- new` 只携带公共规范资源](./2026-09-21-scaffold-new-common-rules-only.md) → [Agent Note](../notes/proposed/feature/2026-09-21-scaffold-new-common-rules-only.md)
