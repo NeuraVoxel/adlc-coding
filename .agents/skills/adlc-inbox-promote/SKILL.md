@@ -47,9 +47,11 @@ In `## Proposal` (or a nearby line), link back to the spark with a relative path
 5. Update the spark: `Status: promoted` and a clear link to the new Agent Note (both language files when a counterpart exists).
 6. Update the matching `QUEUE.md` row to `[x]` and append `→ [Agent Note](<relative path>)`; the row stays in its group and the ID tag stays.
 7. Satisfy the notes README skeleton; the note-format gate rejects drifted sections once introduced.
-8. Report the spark path, the Agent Note path, and the QUEUE line. Do **not** commit unless the user asks. Do **not** implement the proposal.
+8. Report the spark path, the Agent Note path, and the QUEUE line. Do **not** commit unless the user asks.
+9. Ask one question and stop: is this proposal accepted, and should implementation start? Name what implementing would touch, drawn from the note's Proposal and Acceptance criteria, so a yes is informed. Wait for the answer: silence, a deferral, or a no ends the run; a yes starts implementation in the same session, still without `git commit` or `git push` unless those are separately requested. When a turn promotes several sparks, one question after the last report covers them all.
 
 ## Hard stops
 
 - No explicit 升格 / promote in this turn → do not write a proposed note.
 - Do not delete or rename the spark file; the inbox entry stays as the promotion record.
+- Do not implement the proposal unless this run's question was answered yes; accepting a proposal is not permission to commit or push.

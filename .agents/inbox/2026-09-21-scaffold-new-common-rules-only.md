@@ -1,8 +1,10 @@
 # Inbox: 脚手架 `create -- new` 只携带公共规范资源
 
-Status: open
+Status: promoted
 Type: feature
 ID: Feat-0004
+
+→ [Agent Note](../notes/proposed/feature/2026-09-21-scaffold-new-common-rules-only.md)
 
 ## Spark
 
