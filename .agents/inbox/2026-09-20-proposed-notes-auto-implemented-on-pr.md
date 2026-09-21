@@ -1,6 +1,6 @@
 # Inbox: PR 合入时自动把 proposed Agent Note 搬进 implemented
 
-Status: open
+Status: discarded — 伪需求，主动关闭
 Type: feature
 ID: Feat-0003
 
