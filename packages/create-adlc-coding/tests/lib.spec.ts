@@ -112,17 +112,23 @@ describe('SCAFFOLD_TEMPLATES', () => {
 })
 
 describe('scaffoldChangeLog', () => {
-  it('keeps the header and the Unreleased heading, cutting this kit\'s history', () => {
+  it('keeps the header and rebuilds one empty Unreleased heading, dropping this kit\'s history', () => {
     const trimmed = scaffoldChangeLog(
       '# Changelog\n\nIntro.\n\n## Unreleased\n\n### Added\n\n- ours.\n\n## [1.0.0] — 2026-09-20\n\n- older.\n',
     )
     expect(trimmed).toBe('# Changelog\n\nIntro.\n\n## Unreleased\n')
   })
 
-  it('refuses a changelog with no cut point instead of shipping one whole', () => {
-    expect(() => scaffoldChangeLog('# Changelog\n\n## [1.0.0] — 2026-09-20\n')).toThrow(
-      /no "## Unreleased" heading/,
-    )
+  it('rebuilds the same template from a freshly cut changelog', () => {
+    // Between a cut and the next development commit the kit's own changelog
+    // carries no Unreleased section; the scaffold must still build.
+    expect(
+      scaffoldChangeLog('# Changelog\n\nIntro.\n\n## [1.1.0] — 2026-09-21\n\n### Added\n\n- ours.\n'),
+    ).toBe('# Changelog\n\nIntro.\n\n## Unreleased\n')
+  })
+
+  it('refuses a changelog with no section heading to rebuild from', () => {
+    expect(() => scaffoldChangeLog('# Changelog\n\nIntro.\n')).toThrow(/no "## " section heading/)
   })
 })
 

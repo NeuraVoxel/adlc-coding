@@ -19,7 +19,7 @@ Within those trees the copy carries contracts, not this kit's content:
 - `.agents/notes/` ships its README pair and the lifecycle supplements `rules` already carries (`AGENTS.md`, `implemented/AGENTS.md`, `archived/AGENTS.md`), and no note at all: no `{lifecycle}/{class}/yyyy-mm-dd-topic.md` path reaches a new project, so `proposed/`, `rejected/`, and the class directories do not exist there.
 - `.agents/inbox/` ships its README pair and an empty `QUEUE.md` board, and no spark.
 - `.agents/learning/` ships its README pair and `.gitignore`, and no retrospective.
-- `ChangeLog.md` ships cut at its `## Unreleased` heading, without the release history *or* the unreleased entries — a new project's changelog recording our changes is the same leak in a smaller font.
+- `ChangeLog.md` ships rebuilt as the contract's header above one empty `## Unreleased` heading, without the release history *or* the unreleased entries — a new project's changelog recording our changes is the same leak in a smaller font. The heading is rebuilt rather than cut at, because the kit's own changelog carries no `## Unreleased` section between a cut and the next development commit: cutting at that heading holds right up until a cut renames it away, and a scaffold built from the cut tree then fails outright — a regression only a manual scaffold catches.
 - `package.json` ships without the kit's `create` script, which would invoke an installer a scaffold does not carry.
 - `packages/` does not exist in a new project, so `scripts/`, which does ship, keeps its supplement and `packages/AGENTS.md` does not travel: its only subject is this installer.
 

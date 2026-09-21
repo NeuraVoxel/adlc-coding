@@ -194,21 +194,25 @@ export function findUnlistedRootFiles(
 }
 
 /**
- * The scaffold's `ChangeLog.md`: the release contract's header and the
- * `## Unreleased` heading a cut renames, without this kit's history — a new
- * project's changelog records its own changes, not ours.
+ * The scaffold's `ChangeLog.md`: the release contract's header above an empty
+ * `## Unreleased` heading, without this kit's history — a new project's
+ * changelog records its own changes, not ours.
+ *
+ * The heading is rebuilt rather than cut at, because the kit's own changelog
+ * carries no `## Unreleased` section between a cut and the next development
+ * commit, and a scaffold built from that state must not fail.
  * @param content - the kit's `ChangeLog.md`.
- * @returns the content up to and including the `## Unreleased` heading.
- * @throws when that heading is absent, since the template then has no cut
- * point and the adopter would receive unreleased history as their own.
+ * @returns the header, followed by one empty `## Unreleased` heading.
+ * @throws when the content carries no section heading at all, since the
+ * template then has no shape to rebuild from.
  */
 export function scaffoldChangeLog(content: string): string {
   const lines = content.split('\n')
-  const heading = lines.indexOf('## Unreleased')
-  if (heading === -1) {
-    throw new Error('create-adlc-coding: ChangeLog.md carries no "## Unreleased" heading to cut at.')
+  const firstSection = lines.findIndex(line => line.startsWith('## '))
+  if (firstSection === -1) {
+    throw new Error('create-adlc-coding: ChangeLog.md carries no "## " section heading to rebuild from.')
   }
-  return `${lines.slice(0, heading + 1).join('\n')}\n`
+  return `${lines.slice(0, firstSection).join('\n').trimEnd()}\n\n## Unreleased\n`
 }
 
 /**

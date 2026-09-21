@@ -19,7 +19,7 @@ Status: implemented
 - `.agents/notes/` 只带 README 对，以及 `rules` 本来就带的 lifecycle supplement（`AGENTS.md`、`implemented/AGENTS.md`、`archived/AGENTS.md`），一条 note 也不带：任何 `{lifecycle}/{class}/yyyy-mm-dd-topic.md` 路径都不会到达新工程，因此 `proposed/`、`rejected/` 与各 class 目录在那里根本不存在。
 - `.agents/inbox/` 只带 README 对，外加一张空的 `QUEUE.md` 看板，没有火花。
 - `.agents/learning/` 只带 README 对和 `.gitignore`，不带复盘。
-- `ChangeLog.md` 在 `## Unreleased` 标题处裁断，既不带已发布历史，也不带未发布条目——新工程的 changelog 里写着我们的改动，是同一种泄漏换了个更小的字号。
+- `ChangeLog.md` 重建为契约抬头加一个空的 `## Unreleased` 标题，既不带已发布历史，也不带未发布条目——新工程的 changelog 里写着我们的改动，是同一种泄漏换了个更小的字号。之所以是重建而不是在该标题处裁断：本 kit 的 changelog 在一次 cut 之后、下一次开发提交之前根本没有 `## Unreleased` 小节——按那个标题裁断只在 cut 之前成立，cut 一旦把它改名，从 cut 后的树跑脚手架就直接失败，而这个回归只有手工跑一次脚手架才发现得了。
 - `package.json` 不带本 kit 的 `create` 脚本，因为它会去调用脚手架并不携带的安装器。
 - 新工程里没有 `packages/`，所以确实会被带走的 `scripts/` 保留自己的 supplement，而 `packages/AGENTS.md` 不随行：它唯一的主语就是这个安装器。
 
