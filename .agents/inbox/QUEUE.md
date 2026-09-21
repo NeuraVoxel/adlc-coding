@@ -12,5 +12,6 @@
 
 ## Bug
 
+- [ ] [Bug-0003] [对齐 Agent Notes 规范与分类策略](./2026-09-21-agent-notes-spec-classification-alignment.md)
 - [ ] [Bug-0002] [检查 Agent Note 的 class 转换逻辑是否与 dsh 一致](./2026-09-21-agent-note-class-conversion-compare-dsh.md)
 - [x] [Bug-0001] [修 inbox README.zh.md 里遗留的 kit-* 措辞](./2026-09-20-inbox-readme-zh-kit-wording.md) → [Agent Note](../notes/implemented/bug-fix/2026-09-20-inbox-readme-zh-kit-wording.md)
