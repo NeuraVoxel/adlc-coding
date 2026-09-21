@@ -35,7 +35,7 @@ pnpm run create -- adopt ../existing-app --only rules,gates,docs,workflows,ci
 | `.agents/notes/` | Decision records (Agent Notes) |
 | `.agents/inbox/`, `.agents/learning/` | Spark queue (`QUEUE.md` board) and session retrospectives |
 | `.agents/skills/` | The `adlc-*` workflow skills (inbox capture/promote, learning note, release) |
-| `.codebuddy/skills/` | Symlink alias to `.agents/skills` — CodeBuddy Code discovers project skills only here |
+| `.claude/skills/`, `.codebuddy/skills/` | Symlink aliases to `.agents/skills` — Claude Code, CodeBuddy Code, and zcode discover project skills only here |
 
 Docs are English-primary with `.zh.md` Chinese counterparts; `pnpm run doc-sync` rejects drift. `AGENTS.md` (agent-facing) is English-only.
 
