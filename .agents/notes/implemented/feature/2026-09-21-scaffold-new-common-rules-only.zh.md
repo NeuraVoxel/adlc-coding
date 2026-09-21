@@ -44,6 +44,6 @@ Status: implemented
 
 验收标准要求的事都成立，而且全部由那一次冒烟作证：脚手架到临时目录、装好依赖、在其中跑 `pnpm run check:all`——lint、typecheck、56 个用例、五道 `doc-sync` 门禁全绿——零手工剪枝。每一份被交付文档里的每一条 Markdown 链接都指向脚手架确实写出的路径，因为指进未交付记录的链接在拷贝时就被拆掉了。`packages/create-adlc-coding/tests/lib.spec.ts` 钉住这份文件集、只列本 checkout 真实存在的路径、包含"kit 私有树不在集内"的 acceptance 用例与"必须携带的根文件缺失即报错"的 rejection 用例，并核对本仓库受跟踪的每一个根路径要么被携带、要么被声明为不携带。
 
-有三项后果值得带着走。`new` 从此不带 `README.md`、也不带 `LICENSE`：这份封闭清单没有给它们留位置，新工程自己写，而把本 kit 的许可证复制进别人的工程属于授权决定、不是复制。脚手架会原样继承 `tsconfig.tools.json` 与 `vitest.config.ts`，于是两者仍然写着 `packages/create-adlc-coding`——在两个工具里都是惰性的（其它输入已匹配），但那是采用者的树里并不存在的路径；`package.json` 还留着 `1.0.0`，即本 kit 当前的版本，采用者应把它当作起点。这三处都是一行即可定夺、而本 note 并未定夺的取舍，刻意留成可见的，而不是被顺手定死。
+有三项后果值得带着走。`new` 从此不带 `README.md`、也不带 `LICENSE`：这份封闭清单没有给它们留位置，新工程自己写，而把本 kit 的许可证复制进别人的工程属于授权决定、不是复制。脚手架会原样继承 `tsconfig.tools.json` 与 `vitest.config.ts`，于是两者仍然写着 `packages/create-adlc-coding`——在两个工具里都是惰性的（其它输入已匹配），但那是采用者的树里并不存在的路径；`package.json` 还留着 `1.1.0`，即本 kit 当前的版本，采用者应把它当作起点。这三处都是一行即可定夺、而本 note 并未定夺的取舍，刻意留成可见的，而不是被顺手定死。
 
 提案点名的风险如预料般兑现，如今是被围住而非消失。没人列出的文件依旧会消失，但根文件这一风险最集中的地方会先让 spec 失败；摘链依然按设计有损，所以下游读者看得到结论、看不到理由；`adopt` 依旧不读 `SCAFFOLD_ONLY_FILES`，因此漏在那份清单里的 scaffold-only 文件永远不会被采纳流程发现；交付出去的看板仍是空的，只有第一次 capture 能证明它能用——本 kit 再也不能靠 `new` 顺带验证一张有内容的看板。
