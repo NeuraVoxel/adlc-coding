@@ -20,6 +20,8 @@ export const pairedRootFiles: readonly string[] = [
   '.agents/inbox/README.zh.md',
   '.agents/learning/README.md',
   '.agents/learning/README.zh.md',
+  '.agents/research/README.md',
+  '.agents/research/README.zh.md',
 ]
 
 /**

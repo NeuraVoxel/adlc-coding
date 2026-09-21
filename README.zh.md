@@ -2,7 +2,7 @@
 
 中文 | [English](README.md)
 
-面向 AI 工作范式与工作流的 kit：范式与 `adlc-*` 工作流技能，加上一套经过门禁验证的工程规范体系（分层 AGENTS.md 指令、`run-gates` 门禁聚合、lefthook 钩子、Agent Note 决策记录）。它语言无关、不携带任何应用代码——任何技术栈都可以用 `adopt` 采纳这套规则，并保留自己的仓库根。
+面向 AI 工作范式与工作流的 kit：范式与 `adlc-*` 技能，加上一套经过门禁验证的工程规范体系（分层 AGENTS.md 指令、`run-gates` 门禁聚合、lefthook 钩子、Agent Note 决策记录）。它语言无关、不携带任何应用代码——任何技术栈都可以用 `adopt` 采纳这套规则，并保留自己的仓库根。
 
 ## 快速开始
 
@@ -33,8 +33,8 @@ pnpm run create -- adopt ../existing-app --only rules,gates,docs,workflows,ci
 | `scripts/` | 门禁编排 runner 与 verify 脚本 |
 | `docs/` | 架构地图、测试策略、发版合同 |
 | `.agents/notes/` | 决策记录（Agent Notes） |
-| `.agents/inbox/`、`.agents/learning/` | 灵感排队（`QUEUE.md` 排队板）与会话复盘 |
-| `.agents/skills/` | `adlc-*` 工作流技能（inbox 捕获/升格、学习笔记、发版） |
+| `.agents/inbox/`、`.agents/learning/`、`.agents/research/` | 灵感排队（`QUEUE.md` 排队板）、会话复盘与研究笔记（带来源引用） |
+| `.agents/skills/` | 本 kit 发布的 `adlc-*` 技能（inbox 捕获/升格/查看、学习笔记、研究、发版） |
 | `.claude/skills/`、`.codebuddy/skills/` | 指向 `.agents/skills` 的符号链接别名——Claude Code、CodeBuddy Code 与 zcode 只在此处发现项目技能 |
 
 文档以英文为主档，配 `.zh.md` 中文对照；`pnpm run doc-sync` 拒绝两侧漂移。`AGENTS.md`（面向 agent）仅英文。

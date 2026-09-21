@@ -2,7 +2,7 @@
 
 English | [中文](README.zh.md)
 
-An AI work-paradigm and workflow kit: the paradigms and the `adlc-*` workflow skills, plus a verified engineering-rule system (layered AGENTS.md instructions, a `run-gates` aggregate, lefthook hooks, Agent Notes decision records). It is language-agnostic and ships no application code — any stack adopts the rule set with `adopt` and keeps its own root.
+An AI work-paradigm and workflow kit: the paradigms and the `adlc-*` skills, plus a verified engineering-rule system (layered AGENTS.md instructions, a `run-gates` aggregate, lefthook hooks, Agent Notes decision records). It is language-agnostic and ships no application code — any stack adopts the rule set with `adopt` and keeps its own root.
 
 ## Quick start
 
@@ -33,8 +33,8 @@ pnpm run create -- adopt ../existing-app --only rules,gates,docs,workflows,ci
 | `scripts/` | Gate orchestrator and verify scripts |
 | `docs/` | Architecture map, testing strategy, release contract |
 | `.agents/notes/` | Decision records (Agent Notes) |
-| `.agents/inbox/`, `.agents/learning/` | Spark queue (`QUEUE.md` board) and session retrospectives |
-| `.agents/skills/` | The `adlc-*` workflow skills (inbox capture/promote, learning note, release) |
+| `.agents/inbox/`, `.agents/learning/`, `.agents/research/` | Spark queue (`QUEUE.md` board), session retrospectives, and cited research notes |
+| `.agents/skills/` | The `adlc-*` skills this kit ships (inbox capture/promote/view, learning note, research, release) |
 | `.claude/skills/`, `.codebuddy/skills/` | Symlink aliases to `.agents/skills` — Claude Code, CodeBuddy Code, and zcode discover project skills only here |
 
 Docs are English-primary with `.zh.md` Chinese counterparts; `pnpm run doc-sync` rejects drift. `AGENTS.md` (agent-facing) is English-only.
