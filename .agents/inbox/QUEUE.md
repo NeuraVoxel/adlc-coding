@@ -2,7 +2,7 @@
 
 ## Feat
 
-- [ ] [Feat-0001] [创建 apps/inbox 用 web 页面显示 inbox 内容](./2026-09-20-apps-inbox-web-page.md)
+- [x] [Feat-0001] [创建 apps/inbox 用 web 页面显示 inbox 内容](./2026-09-20-apps-inbox-web-page.md) — 伪需求，关闭
 - [x] [Feat-0002] [QUEUE.md 按 Feat / Bug 分组显示](./2026-09-20-queue-feat-bug-sections.md) → [Agent Note](../notes/implemented/feature/2026-09-20-queue-feat-bug-sections.md)
 - [x] [Feat-0003] [PR 合入时自动把 proposed Agent Note 搬进 implemented](./2026-09-20-proposed-notes-auto-implemented-on-pr.md) — 伪需求，关闭
 - [x] [Feat-0004] [脚手架 `create -- new` 只携带公共规范资源](./2026-09-21-scaffold-new-common-rules-only.md) → [Agent Note](../notes/implemented/feature/2026-09-21-scaffold-new-common-rules-only.md)
