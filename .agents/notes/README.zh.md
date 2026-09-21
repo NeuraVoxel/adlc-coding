@@ -83,7 +83,7 @@ archived:     封存时的 implemented 骨架，外加 Archived: 行
 
 ### 生命周期之间移动
 
-在生命周期目录间移动文件，意味着同一变更内更新 `Status:` 行并重新满足该目录的骨架——否则门禁拒绝这次移动。具体地：`proposed/` → `implemented/` 把 `## Proposal` 改写为现在时的 `## Decision`，并把 `## Acceptance criteria` 与 `## Risks` 并入 `## Consequences`；`proposed/` → `rejected/` 只在 `Status:` 行加理由。
+在生命周期目录间移动文件，意味着同一变更内更新 `Status:` 行并重新满足该目录的骨架——否则门禁拒绝这次移动。具体地：`proposed/` → `implemented/` 把 `## Proposal` 改写为现在时的 `## Decision`，并把 `## Acceptance criteria` 与 `## Risks` 并入 `## Consequences`；`proposed/` → `rejected/` 只在 `Status:` 行加理由。这次移动也要在同一变更内修复该 note 的**入链**——inbox 的 `QUEUE.md` 行、促成它的 spark，以及其他任何指向旧目录的链接；这些表面不在任何门禁的扫描范围内，别处不会发现它们过期。
 
 ### 中文对照
 

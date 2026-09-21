@@ -83,7 +83,7 @@ Every note carries an `## Alternatives considered` section: each genuine alterna
 
 ### Moving between lifecycles
 
-Moving a file between lifecycle folders means updating the `Status:` line and re-satisfying that folder's skeleton in the same change — the gate fails the move otherwise. Concretely, `proposed/` → `implemented/` rewrites `## Proposal` into a present-tense `## Decision` and folds `## Acceptance criteria` and `## Risks` into `## Consequences`; `proposed/` → `rejected/` only adds the reason to the `Status:` line.
+Moving a file between lifecycle folders means updating the `Status:` line and re-satisfying that folder's skeleton in the same change — the gate fails the move otherwise. Concretely, `proposed/` → `implemented/` rewrites `## Proposal` into a present-tense `## Decision` and folds `## Acceptance criteria` and `## Risks` into `## Consequences`; `proposed/` → `rejected/` only adds the reason to the `Status:` line. The move also repairs the note's **inbound** links in the same change — the inbox `QUEUE.md` row and the spark that promoted it, plus any other link pointing at the old folder; those surfaces sit outside every gate, so nothing else will catch a stale one.
 
 ### Chinese counterparts
 
