@@ -42,7 +42,7 @@ Archiving moves the complete English/Chinese pair to `archived/{class}/`, keeps 
 
 ## When to write one
 
-Every **non-trivial change** adds or updates at least one Agent Note in the same PR: changes to behavior, architecture, a contract shared across files or packages, process or tooling, testing strategy, an on-disk/wire/configuration format, or any decision a maintainer may reasonably revisit. Implemented notes sync with code moves, renames, and default changes in the same change. Purely mechanical or local edits are exempt.
+Every **non-trivial change** adds or updates at least one Agent Note in the same PR: changes to behavior, architecture, a contract shared across files or packages, process or tooling, testing strategy, an on-disk/wire/configuration format, or any decision a maintainer may reasonably revisit. Implemented notes sync with code moves, renames, and default changes in the same change. Only a purely mechanical or local edit with no change to behavior, contracts, structure, process, or rationale is exempt.
 
 ## Supersession and consolidation
 
