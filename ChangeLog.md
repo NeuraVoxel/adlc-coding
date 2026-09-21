@@ -12,7 +12,9 @@ Notable changes to this repository are listed here by released semver. The versi
 
 - `adlc-inbox-promote` ends its run with one question instead of a stop: after reporting the spark, note, and queue line, it asks whether the proposal is accepted and implementation should start, naming what implementing would touch, and waits — silence, a deferral, or a no ends the run, a yes starts implementation in the same session, and `git commit` / `git push` still need their own explicit request. The hard stop "do not implement the proposal" becomes "do not implement the proposal unless this run's question was answered yes".
 
-- `QUEUE.md` groups its rows by kind: `## Feat` above `## Bug`, each under its own heading beneath `# Inbox queue`, newest-first inside a group and empty groups omitted. Row shape is unchanged, so a departed row still carries `[x]` and its Agent Note link; the board is no longer one chronological list, and the inbox README pair now says that recency is per-group. `adlc-inbox-capture` inserts into the group matching the type and `adlc-inbox-promote` flips a row in place.
+- `QUEUE.md` groups its rows by kind: `## Feat` above `## Bug`, each under its own heading beneath `# Inbox queue`, oldest capture first inside a group and empty groups omitted. Row shape is unchanged, so a departed row still carries `[x]` and its Agent Note link; the board is no longer one chronological list, and the inbox README pair now says that arrival order is per-group. `adlc-inbox-capture` appends to the group matching the type and `adlc-inbox-promote` flips a row in place.
+
+- `QUEUE.md` reads each group in arrival order: the row captured first sits at the top of its group and each later capture joins the bottom, so the longest-waiting open row is the first `[ ]` line a sweep sees. `adlc-inbox-capture` appends a new row as the last row of its group instead of putting it first, and the inbox README pair states the order in both languages. `adlc-inbox-view` still renders newest-first, so the board and the view now run in opposite directions.
 
 ### Fixed
 

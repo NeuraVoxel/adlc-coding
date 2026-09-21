@@ -45,7 +45,7 @@ ID: <Feat|Bug>-NNNN
 <only when the user supplied notes; otherwise omit the whole section>
 ```
 
-5. Insert into `QUEUE.md`, with the ID as the tag: the new row goes first inside the group matching the type (`Feat` for `feature`, `Bug` for `bug`), under that group's `## ` heading; create the group heading when the group has no rows yet. `Feat` stays above `Bug`:
+5. Append to `QUEUE.md`, with the ID as the tag: the new row goes last inside the group matching the type (`Feat` for `feature`, `Bug` for `bug`), under that group's `## ` heading; create the group heading when the group has no rows yet. Groups read oldest capture first, so the new row joins the bottom and no existing row moves. `Feat` stays above `Bug`:
 
 ```markdown
 ## Feat

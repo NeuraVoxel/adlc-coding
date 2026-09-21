@@ -59,7 +59,7 @@ ID: Feat-0001
 - `[x]` marks a departed entry (`promoted` or `discarded`); a promoted row links the Agent Note; a discarded row may carry a short reason.
 - Each row carries the entry's ID as a tag before the link: `- [ ] [Feat-0001] [title](./yyyy-mm-dd-slug.md)`. The tag carries the type too — `Feat-` is `feature`, `Bug-` is `bug`.
 - Rows are grouped by kind, `Feat` above `Bug`, each group under its own `## ` heading beneath `# Inbox queue`; a group with no rows is omitted.
-- Order: newest capture first **inside a group**. The board is no longer one chronological list, so row order says recency within a kind, not across kinds.
+- Order: oldest capture first **inside a group** — the row captured first sits at the top of its group and each later capture joins the bottom.
 
 The board is the `# Inbox queue` heading, its group headings, and its rows — no legend, no empty-state note; this README is the board's only authority, so a fact lives here and never in the file. No `[ ]` row means the queue is empty.
 
@@ -68,7 +68,7 @@ Every capture, promotion, or dismissal updates the entry file and its `QUEUE.md`
 ## Capture
 
 1. Create `yyyy-mm-dd-slug.md` with `Status: open`, a `Type:` line (`feature` or `bug`), an `ID:` line derived as that type's highest number in use plus one, and a few sentences under `## Spark`.
-2. Prepend `- [ ] [<id>] [title](./yyyy-mm-dd-slug.md)` to `QUEUE.md`, as the first row of the group matching the type (`Feat` for `feature`, `Bug` for `bug`). Create the group heading when the group has no rows yet.
+2. Append `- [ ] [<id>] [title](./yyyy-mm-dd-slug.md)` to `QUEUE.md`, as the last row of the group matching the type (`Feat` for `feature`, `Bug` for `bug`). Create the group heading when the group has no rows yet.
 
 Or use the installed skills (adlc-authored skills live flat under `.agents/skills/`):
 
