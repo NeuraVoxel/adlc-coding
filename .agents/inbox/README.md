@@ -49,6 +49,8 @@ ID: Feat-0001
 - `feature` — something that does not exist yet: a new capability, contract, or process, or an improvement to one
 - `bug` — something already wrong: a defect, a drift, or a violation of a contract this repository already states
 
+`Type` is the entry's own axis — is this new, or already wrong — and it is **not** the Agent Note `class`. A promoted note's class is one of the six in the [Agent Notes Classification](../notes/README.md#classification) (`feature`, `bug-fix`, `simplification`, `architecture`, `process`, `testing`), chosen at promotion from what the decision *is*; `Type` never becomes a class by default.
+
 `Type` is captured once and never changes with status: a promoted or discarded spark keeps the type it was captured with. No gate checks the shape; this README and discipline do.
 
 `ID` is the spark's task number: `Feat-` for `feature` and `Bug-` for `bug`, followed by a per-type four-digit sequence (`Feat-0001`, `Bug-0001`). Capture derives it as the highest number of that type already in use plus one, scanning both the spark files and the `QUEUE.md` rows. An ID is assigned once and then never changes — not with status, not on promotion or discard — and a departed spark's number is never reused. A spark captured before IDs existed gets its number on first touch. No gate checks any of this either; this README and discipline do.
@@ -59,7 +61,7 @@ ID: Feat-0001
 - `[x]` marks a departed entry (`promoted` or `discarded`); a promoted row links the Agent Note; a discarded row may carry a short reason.
 - Each row carries the entry's ID as a tag before the link: `- [ ] [Feat-0001] [title](./yyyy-mm-dd-slug.md)`. The tag carries the type too — `Feat-` is `feature`, `Bug-` is `bug`.
 - Rows are grouped by kind, `Feat` above `Bug`, each group under its own `## ` heading beneath `# Inbox queue`; a group with no rows is omitted.
-- Order: newest capture first **inside a group**. The board is no longer one chronological list, so row order says recency within a kind, not across kinds.
+- Order: oldest capture first **inside a group** — the row captured first sits at the top of its group and each later capture joins the bottom.
 
 The board is the `# Inbox queue` heading, its group headings, and its rows — no legend, no empty-state note; this README is the board's only authority, so a fact lives here and never in the file. No `[ ]` row means the queue is empty.
 
@@ -68,14 +70,14 @@ Every capture, promotion, or dismissal updates the entry file and its `QUEUE.md`
 ## Capture
 
 1. Create `yyyy-mm-dd-slug.md` with `Status: open`, a `Type:` line (`feature` or `bug`), an `ID:` line derived as that type's highest number in use plus one, and a few sentences under `## Spark`.
-2. Prepend `- [ ] [<id>] [title](./yyyy-mm-dd-slug.md)` to `QUEUE.md`, as the first row of the group matching the type (`Feat` for `feature`, `Bug` for `bug`). Create the group heading when the group has no rows yet.
+2. Append `- [ ] [<id>] [title](./yyyy-mm-dd-slug.md)` to `QUEUE.md`, as the last row of the group matching the type (`Feat` for `feature`, `Bug` for `bug`). Create the group heading when the group has no rows yet.
 
 Or use the installed skills (adlc-authored skills live flat under `.agents/skills/`):
 
 | Skill | Purpose |
 |---|---|
 | [adlc-inbox-capture](../skills/adlc-inbox-capture/SKILL.md) | Given just the body (optional title / slug / notes / type): writes the spark (type resolved, never silently defaulted), assigns the next ID, and updates `QUEUE.md` |
-| [adlc-inbox-promote](../skills/adlc-inbox-promote/SKILL.md) | Explicitly promotes one `open` spark — targeted by ID, path, title, or keyword — to a `proposed/` Agent Note (class derived from its type unless one is given) and updates status and queue |
+| [adlc-inbox-promote](../skills/adlc-inbox-promote/SKILL.md) | Explicitly promotes one `open` spark — targeted by ID, path, title, or keyword — to a `proposed/` Agent Note (class chosen from the six, the type only a hint) and updates status and queue |
 | [adlc-inbox-view](../skills/adlc-inbox-view/SKILL.md) | Read-only: renders every spark as Markdown tables grouped by type (`feature` / `bug`), newest first, with `ID` and `Status` columns |
 
 Capture never promotes; promotion requires an explicit promote request in the turn.
@@ -87,11 +89,11 @@ Open `QUEUE.md` and read only the `[ ]` rows; sweeping one kind means reading th
 ## Promote
 
 1. Confirm the spark deserves a full, seriously reviewed Agent Note.
-2. Choose the class from the type: `feature` → `notes/proposed/feature/`, `bug` → `notes/proposed/bug-fix/`. An explicitly requested class wins; a missing or ambiguous type is one clarifying question, never a guess.
+2. Choose the class from the six in the [Agent Notes Classification](../notes/README.md#classification), reading the spark against those discriminators. An explicitly requested class wins; otherwise pick the class the decision actually is and say why — the spark's `Type` only hints at `feature` / `bug-fix` and is never the default, so a `feature` spark about tooling may land in `process`. Ask one clarifying question only when two classes genuinely contend.
 3. Create the formal note under `.agents/notes/proposed/<class>/yyyy-mm-dd-….md` — never by renaming or moving the inbox file.
 4. Cross-link: the proposed note links the spark; the spark becomes `Status: promoted` and links the note, keeping its `Type`.
 5. Flip the `QUEUE.md` row to `[x]` with the Agent Note link; the ID tag stays.
-6. Prefer one change for all of it; if split across commits, the bidirectional links must be complete by the end.
+6. Prefer one change for all of it; if split across commits, the bidirectional links must be complete by the end. A later move of the note between lifecycle folders (for example `proposed/` → `implemented/`) updates this `QUEUE.md` row and the spark's link in the same change ([why](../notes/README.md#moving-between-lifecycles)) — no gate reads `QUEUE.md` or a spark, so nothing else will catch a stale link.
 
 An agent may draft entries and update `QUEUE.md`; an agent must not promote unless the human explicitly asks in the current turn.
 

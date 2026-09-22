@@ -7,6 +7,7 @@
  */
 import { createHash } from 'node:crypto'
 import { existsSync, readdirSync, readFileSync } from 'node:fs'
+import { isSupplementPath } from './agent-note-tree.ts'
 import { relative, resolve } from 'node:path'
 import { pathToFileURL } from 'node:url'
 
@@ -61,7 +62,7 @@ export function findArchiveViolations(
   return violations.sort()
 }
 
-function collectArchivedFiles(archiveDir: string): Map<string, string> {
+export function collectArchivedFiles(archiveDir: string): Map<string, string> {
   const files = new Map<string, string>()
   const walk = (dir: string): void => {
     if (!existsSync(dir)) return
@@ -69,7 +70,11 @@ function collectArchivedFiles(archiveDir: string): Map<string, string> {
       const abs = resolve(dir, entry.name)
       if (entry.isDirectory()) walk(abs)
       else if (entry.isFile() && entry.name.endsWith('.md')) {
-        files.set(relative(archiveDir, abs).split('\\').join('/'), readFileSync(abs, 'utf8'))
+        // The freeze covers notes; English-only environment instructions are
+        // instructions, not sealed content.
+        const rel = relative(archiveDir, abs).split('\\').join('/')
+        if (isSupplementPath(`archived/${rel}`)) continue
+        files.set(rel, readFileSync(abs, 'utf8'))
       }
     }
   }

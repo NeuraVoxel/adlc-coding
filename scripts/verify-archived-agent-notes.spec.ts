@@ -1,5 +1,8 @@
+import { mkdtempSync, mkdirSync, writeFileSync } from 'node:fs'
+import { tmpdir } from 'node:os'
+import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
-import { findArchiveViolations, noteHash } from './verify-archived-agent-notes.ts'
+import { collectArchivedFiles, findArchiveViolations, noteHash } from './verify-archived-agent-notes.ts'
 
 const note = '# Agent Note: old\n\nStatus: implemented\nArchived: 2026-09-15\n\n## Problem\n'
 const noteZh = '# Agent Note: old\n\nStatus: implemented\nArchived: 2026-09-15\n\n## Problem\n'
@@ -43,5 +46,17 @@ describe('findArchiveViolations', () => {
   it('ignores non-archived paths', () => {
     const files = new Map([['implemented/process/2026-09-15-live.md', 'anything']])
     expect(findArchiveViolations(files, {})).toEqual([])
+  })
+})
+
+describe('collectArchivedFiles', () => {
+  it('collects notes and skips English-only environment supplements', () => {
+    const archiveDir = mkdtempSync(join(tmpdir(), 'archive-'))
+    mkdirSync(join(archiveDir, 'process'), { recursive: true })
+    writeFileSync(join(archiveDir, 'AGENTS.md'), '# Supplement\n')
+    writeFileSync(join(archiveDir, 'process', '2026-09-15-old.md'), note)
+
+    const files = collectArchivedFiles(archiveDir)
+    expect([...files.keys()]).toEqual(['process/2026-09-15-old.md'])
   })
 })

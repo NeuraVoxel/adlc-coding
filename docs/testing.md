@@ -21,7 +21,7 @@ pnpm exec vitest run packages/create-adlc-coding/tests/lib.spec.ts
 pnpm run doc-sync
 ```
 
-Installer changes warrant a real smoke: scaffold into a temp directory and run the gates there, since the copied checkout is the product.
+Installer changes warrant a real smoke: scaffold into a temp directory and run the gates there, since the scaffolded tree is the product — a link the copy cannot follow, or a spec fixture it rewrites, fails there and nowhere else.
 
 ## Evolution order
 

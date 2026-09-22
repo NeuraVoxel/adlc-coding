@@ -2,20 +2,30 @@
 
 Notable changes to this repository are listed here by released semver. The version authority is root `package.json`; each released cut also carries an annotated git tag `v<version>`. Development accumulates under `## Unreleased`; a cut renames that heading (see [docs/release.md](docs/release.md)).
 
-## Unreleased
+## [1.1.0] — 2026-09-21
 
 ### Added
 
 - Inbox sparks carry a stable task ID: `Feat-0001` / `Bug-0001`, a per-type four-digit sequence derived as the highest number in use plus one, written on an `ID:` line in the spark and as the `QUEUE.md` row tag (replacing the type tag, since the prefix carries the type). `adlc-inbox-promote` takes an ID as its target (case-insensitive prefix, numeric digits, so `feat-1` resolves), and `adlc-inbox-view` gains an `ID` column. IDs never change and are never reused.
 
+- `adlc-implement` skill (`.agents/skills/adlc-implement/SKILL.md`, shipped in the installer's `workflows` component): given a `proposed/` Agent Note — by path, slug, title, keyword, or the ID of the spark that promoted into it — it asks once whether the proposal is accepted and, on a yes, implements to the note's Proposal and Acceptance criteria, runs the narrowest evidence the change surface implies, moves the note to `implemented/` with its skeleton re-tensed in both languages, and repairs the inbound links and downstream facts. A no, a deferral, or no answer leaves the tree untouched, and accepting a proposal is not permission to commit or push.
+
 ### Changed
 
-- `QUEUE.md` groups its rows by kind: `## Feat` above `## Bug`, each under its own heading beneath `# Inbox queue`, newest-first inside a group and empty groups omitted. Row shape is unchanged, so a departed row still carries `[x]` and its Agent Note link; the board is no longer one chronological list, and the inbox README pair now says that recency is per-group. `adlc-inbox-capture` inserts into the group matching the type and `adlc-inbox-promote` flips a row in place.
+- `adlc-inbox-promote` ends its run with one question instead of a stop: after reporting the spark, note, and queue line, it asks whether the proposal is accepted and implementation should start, naming what implementing would touch, and waits — silence, a deferral, or a no ends the run, a yes starts implementation in the same session, and `git commit` / `git push` still need their own explicit request. The hard stop "do not implement the proposal" becomes "do not implement the proposal unless this run's question was answered yes".
+
+- `QUEUE.md` groups its rows by kind: `## Feat` above `## Bug`, each under its own heading beneath `# Inbox queue`, oldest capture first inside a group and empty groups omitted. Row shape is unchanged, so a departed row still carries `[x]` and its Agent Note link; the board is no longer one chronological list, and the inbox README pair now says that arrival order is per-group. `adlc-inbox-capture` appends to the group matching the type and `adlc-inbox-promote` flips a row in place.
+
+- `QUEUE.md` reads each group in arrival order: the row captured first sits at the top of its group and each later capture joins the bottom, so the longest-waiting open row is the first `[ ]` line a sweep sees. `adlc-inbox-capture` appends a new row as the last row of its group instead of putting it first, and the inbox README pair states the order in both languages. `adlc-inbox-view` still renders newest-first, so the board and the view now run in opposite directions.
+
+- `create -- new` writes a component copy instead of a whole-checkout copy: the union of the installer's `COMPONENTS` and a new `SCAFFOLD_ONLY_FILES` list (`.gitignore`, `package.json`, `pnpm-workspace.yaml`, `scripts/AGENTS.md`, `scripts/CLAUDE.md`, `tsconfig.base.json`, `tsconfig.tools.json`, `vitest.config.ts`). A new project no longer inherits this repository's Agent Notes, sparks, learning retrospectives, released changelog history, installer package, or lockfile; the kit's README pair and licence are declared carried-by-nobody on purpose, and `findUnlistedRootFiles` fails the spec when a tracked root file reaches neither list. Two files ship rewritten rather than verbatim — `ChangeLog.md` is rebuilt as the contract's header above one empty `## Unreleased` heading, and `package.json` drops the kit's `create` script, which invokes an installer that does not travel. The heading is rebuilt rather than cut at, because the kit's own changelog carries no `## Unreleased` section between a cut and the next development commit, so a scaffold built from a cut tree would fail. Markdown references into the unshipped record are unwrapped during the copy, in `.md` files only, so a scaffold is green as delivered with no manual pruning; `CLAUDE.md` is recreated as a relative alias beside every shipped `AGENTS.md`, where a copied subtree previously produced an absolute link back into the source checkout.
 
 ### Fixed
 
 - The Chinese inbox README introduces the installed skills with the repository's own `adlc-` prefix, matching its English counterpart's `adlc-authored skills`; the 1.0.0 `kit-*` → `adlc-*` rename had left that one line behind. Generic uses of "kit" as this repository's common noun are untouched.
 - Twelve inbound links to Agent Notes that no longer exist are repaired: `README.md` and `README.zh.md` no longer point at the removed roadmap note, `docs/architecture.md` and its counterpart point the installer design at `packages/create-adlc-coding/`, and the two `2026-09-20` inbox notes point the type axis at the inbox README pair, which is where the type axis is documented now.
+
+- The note removals of the same change left three more inbound links dangling on the surfaces no gate reads, and all three now resolve: `packages/create-adlc-coding/README.md` no longer points at the removed installer note, and `AGENTS.md` points its English-only pairing rule and its cross-stack adoption rule at the `docs/architecture.md` sections that own them today. The earlier sweep stopped at the paired corpus — `AGENTS.md` is exempted from pairing and excluded from reference checking by design, and `packages/**` is in no corpus — so nothing but a manual sweep would have found these.
 
 ## [1.0.0] — 2026-09-20
 

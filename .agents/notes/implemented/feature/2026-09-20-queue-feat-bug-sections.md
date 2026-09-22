@@ -8,9 +8,9 @@ Status: implemented
 
 ## Decision
 
-The board is grouped: beneath `# Inbox queue`, `## Feat` comes first and `## Bug` below it, each group holding the rows of that kind newest-first, and a group with no rows is omitted. Row shape did not change — `- [ ] [Feat-0002] [title](./yyyy-mm-dd-slug.md)`, with a departed row keeping its `[x]` and its `→ [Agent Note](…)` link.
+The board is grouped: beneath `# Inbox queue`, `## Feat` comes first and `## Bug` below it, each group holding the rows of that kind, and a group with no rows is omitted. Rows inside a group run oldest capture first: [Feat-0006](../feature/2026-09-21-queue-ascending-order.md) reversed the newest-first order this decision originally kept; the grouping, the row shape, and the ID tag are unchanged. Row shape did not change — `- [ ] [Feat-0002] [title](./yyyy-mm-dd-slug.md)`, with a departed row keeping its `[x]` and its `→ [Agent Note](…)` link.
 
-The [inbox README](../../../inbox/README.md) pair carries the shape: the `## QUEUE.md` section states the two groups and that newest-first now holds inside a group, the Capture step says a row lands in the group matching its type, and the Sweep paragraph says a sweep reads one group. Both languages changed together, since the pair is gated on structure. [`adlc-inbox-capture`](../../../skills/adlc-inbox-capture/SKILL.md) inserts into the matching group and creates the heading when the group is empty; [`adlc-inbox-promote`](../../../skills/adlc-inbox-promote/SKILL.md) flips a row in place, so departed rows stay in their group; `adlc-inbox-view` needed no change — it already grouped by type.
+The [inbox README](../../../inbox/README.md) pair carries the shape: the `## QUEUE.md` section states the two groups and that the oldest capture now comes first inside a group, the Capture step says a row lands at the end of the group matching its type, and the Sweep paragraph says a sweep reads one group. Both languages changed together, since the pair is gated on structure. [`adlc-inbox-capture`](../../../skills/adlc-inbox-capture/SKILL.md) inserts into the matching group and creates the heading when the group is empty; [`adlc-inbox-promote`](../../../skills/adlc-inbox-promote/SKILL.md) flips a row in place, so departed rows stay in their group; `adlc-inbox-view` needed no change — it already grouped by type.
 
 See the spark: [Feat-0002](../../../inbox/2026-09-20-queue-feat-bug-sections.md).
 
@@ -25,6 +25,6 @@ See the spark: [Feat-0002](../../../inbox/2026-09-20-queue-feat-bug-sections.md)
 
 A sweep reads one group and skips the other, and the three Feat rows and the Bug row sit where the contract says they sit. The grouping is stated in the README pair rather than only in the file, so it cannot drift silently out of the documented shape without a reviewer noticing; `pnpm run doc-sync` stayed green through the change.
 
-The cost named in review is real and now permanent: the board is no longer one chronological list, so row order says recency within a kind, never across kinds. Capture dates remain in the row filenames and links, but anything that read global recency off row order has to read dates instead.
+The cost named in review is real and now permanent: the board is no longer one chronological list, so row order says arrival order within a kind — oldest first — never across kinds. Capture dates remain in the row filenames and links, but anything that read global recency off row order has to read dates instead.
 
 `adlc-inbox-capture` and `adlc-inbox-promote` learned the grouping in the same change, so captures cannot land in the wrong group and promotions cannot move a row between groups. `QUEUE.md` itself stays outside the gates — a malformed group would fail nothing — so the check remains the gated README pair plus review.

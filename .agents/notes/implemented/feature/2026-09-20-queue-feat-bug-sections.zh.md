@@ -8,9 +8,9 @@ Status: implemented
 
 ## Decision
 
-看板现在分组：`# Inbox queue` 之下 `## Feat` 在上、`## Bug` 在下，各组持有该类别的行、组内新 → 旧，某组没有行时该组省略。行本身格式未变——`- [ ] [Feat-0002] [标题](./yyyy-mm-dd-slug.md)`，已离队的行继续保留 `[x]` 与 `→ [Agent Note](…)` 链接。
+看板现在分组：`# Inbox queue` 之下 `## Feat` 在上、`## Bug` 在下，各组持有该类别的行，某组没有行时该组省略。组内按先捕获在前排列：[Feat-0006](../feature/2026-09-21-queue-ascending-order.md) 把本决策最初保留的"新 → 旧"倒转了过来；分组、行格式与编号标签均未变。行本身格式未变——`- [ ] [Feat-0002] [标题](./yyyy-mm-dd-slug.md)`，已离队的行继续保留 `[x]` 与 `→ [Agent Note](…)` 链接。
 
-新的形状写进了 [inbox README](../../../inbox/README.md) 双份：`## QUEUE.md` 一节说明两组、并说明新 → 旧现在只在组内成立；捕获步骤说明按类型进组；扫队列段落说明一次读一组。两种语言同批修改，因为这对文件在结构上受门禁约束。[`adlc-inbox-capture`](../../../skills/adlc-inbox-capture/SKILL.md) 插进对应组、组为空时先建标题；[`adlc-inbox-promote`](../../../skills/adlc-inbox-promote/SKILL.md) 就地翻转行，因此已离队的行留在原组；`adlc-inbox-view` 无需改动——它本来就按类型分组。
+新的形状写进了 [inbox README](../../../inbox/README.md) 双份：`## QUEUE.md` 一节说明两组、并说明先捕获的行现在排在组内最前；捕获步骤说明按类型进组、落到组尾；扫队列段落说明一次读一组。两种语言同批修改，因为这对文件在结构上受门禁约束。[`adlc-inbox-capture`](../../../skills/adlc-inbox-capture/SKILL.md) 插进对应组、组为空时先建标题；[`adlc-inbox-promote`](../../../skills/adlc-inbox-promote/SKILL.md) 就地翻转行，因此已离队的行留在原组；`adlc-inbox-view` 无需改动——它本来就按类型分组。
 
 spark 见：[Feat-0002](../../../inbox/2026-09-20-queue-feat-bug-sections.md)。
 
@@ -25,6 +25,6 @@ spark 见：[Feat-0002](../../../inbox/2026-09-20-queue-feat-bug-sections.md)。
 
 扫队列现在读一组、跳过另一组，三条 Feat 行与那条 Bug 行都在合同所说的位置上。分组写进了 README 双份而不只是写进文件，因此它不可能在无人察觉的情况下漂移出文档形状；整个改动过程中 `pnpm run doc-sync` 保持绿灯。
 
-评审时点明的代价真实存在且已永久化：看板不再是单一时间序列表，行序表示的是同类内部的先后，不是跨类别的先后。捕获日期仍留在行的文件名与链接里，但任何靠行序读取"全局最新"的用法都必须改读日期。
+评审时点明的代价真实存在且已永久化：看板不再是单一时间序列表，行序表示的是同类内部的到达先后——先捕获的在前，不是跨类别的先后。捕获日期仍留在行的文件名与链接里，但任何靠行序读取"全局最新"的用法都必须改读日期。
 
 `adlc-inbox-capture` 与 `adlc-inbox-promote` 在同一次变更里学会了分组，因此捕获不会插错组、升格也不会把行挪到别的组。`QUEUE.md` 本身仍在门禁之外——分组写错不会有任何门禁失败——所以校验手段依旧是受门禁约束的 README 双份，加上评审。

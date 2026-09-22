@@ -14,12 +14,14 @@ import {
   applyRenames,
   COMPONENTS,
   findMissingComponents,
-  isExcluded,
+  isLinkSurface,
   isRenamable,
   mergeScripts,
   pruneExcludedReferences,
   resolveComponents,
   RUNNER_SCRIPTS,
+  SCAFFOLD_TEMPLATES,
+  scaffoldFileSet,
   type RenameIdentities,
 } from './lib.ts'
 
@@ -79,12 +81,18 @@ function optionalString(flags: Map<string, string | boolean>, key: string): stri
   return value
 }
 
-/** Recreate the CLAUDE.md alias as a symlink; a real copy keeps it usable where symlinks are unavailable. */
-async function ensureClaudeSymlink(dir: string): Promise<void> {
+/**
+ * Recreate the `CLAUDE.md` alias beside the `AGENTS.md` in one directory; a real copy keeps it usable where symlinks are unavailable.
+ *
+ * Called for the scaffold root and for each shipped subtree that carries a
+ * supplement, because `node:fs cp` materializes a copied relative symlink with
+ * an absolute target pointing back at the source checkout — an alias that
+ * resolves on the author's machine and nowhere else.
+ * @param dir - directory holding the `AGENTS.md` the alias points at.
+ */
+async function ensureClaudeAlias(dir: string): Promise<void> {
   const link = join(dir, 'CLAUDE.md')
   const stats = await lstat(link).catch(() => undefined)
-  // node:fs cp materializes copied symlinks with absolute targets pointing
-  // back at the source checkout; only a correct relative alias survives.
   if (stats?.isSymbolicLink() && (await readFile(link, 'utf8')) === 'AGENTS.md') return
   if (stats !== undefined) await rm(link)
   try {
@@ -92,32 +100,39 @@ async function ensureClaudeSymlink(dir: string): Promise<void> {
   } catch {
     // Windows without developer mode rejects symlinks; a plain copy keeps the alias usable.
     await cp(join(dir, 'AGENTS.md'), link)
-    console.log('create-adlc-coding: CLAUDE.md written as a copy (symlinks unavailable on this platform).')
+    console.log(`create-adlc-coding: ${toPosix(link)} written as a copy (symlinks unavailable on this platform).`)
   }
 }
 
 /**
- * Recreate `.codebuddy/skills` as a relative alias to `.agents/skills`.
+ * Recreate a harness's project skill directory as a relative alias to
+ * `.agents/skills`.
  *
- * CodeBuddy Code discovers project skills only under `.codebuddy/skills/`, so
- * without the alias the `adlc-*` skills this kit ships stay invisible to it.
+ * Claude Code discovers project skills under `.claude/skills/`, and CodeBuddy
+ * Code under `.codebuddy/skills/`; without the alias the `adlc-*` skills this kit
+ * ships stay invisible to that harness. zcode reads both `.claude/skills` and
+ * `.codebuddy/skills` (its skill-source map lists every mainstream harness), so
+ * these two aliases cover zcode with no zcode-specific directory of its own.
  * The alias is recreated rather than trusted from the copy, for the same reason
  * as `CLAUDE.md`: a materialized symlink points back at the source checkout.
  * A target without `.agents/skills` gets no alias — a dangling link is worse
  * than none. An existing symlink is replaced (a copy can materialize one
  * pointing back at the source checkout); anything else is left alone, since it
  * may hold skills the target already owns.
+ * @param dir - the target project root.
+ * @param harnessDir - the harness config directory, e.g. `.claude`.
+ * @param harnessName - the harness name for operator-facing messages.
  */
-async function ensureCodebuddySkillsAlias(dir: string): Promise<void> {
+async function ensureSkillsAlias(dir: string, harnessDir: string, harnessName: string): Promise<void> {
   const source = join(dir, '.agents', 'skills')
   if (!existsSync(source)) return
-  const link = join(dir, '.codebuddy', 'skills')
+  const link = join(dir, harnessDir, 'skills')
   const stats = await lstat(link).catch(() => undefined)
   if (stats?.isSymbolicLink()) {
     if ((await readlink(link)) === '../.agents/skills') return
     await rm(link)
   } else if (stats !== undefined) {
-    console.log('create-adlc-coding: .codebuddy/skills already exists and was left untouched; alias it to .agents/skills for CodeBuddy Code discovery.')
+    console.log(`create-adlc-coding: ${harnessDir}/skills already exists and was left untouched; alias it to .agents/skills for ${harnessName} discovery.`)
     return
   }
   await mkdir(dirname(link), { recursive: true })
@@ -126,13 +141,17 @@ async function ensureCodebuddySkillsAlias(dir: string): Promise<void> {
   } catch {
     // Windows without developer mode rejects symlinks; a copy keeps the skills discoverable.
     await cp(source, link, { recursive: true })
-    console.log('create-adlc-coding: .codebuddy/skills written as a copy (symlinks unavailable on this platform).')
+    console.log(`create-adlc-coding: ${harnessDir}/skills written as a copy (symlinks unavailable on this platform).`)
   }
 }
 
 /**
- * Rename identities across a copied tree's text surfaces and unwrap links to
- * paths the copy excluded. Files keep their names; only content changes.
+ * Rename identities across a copied tree's text surfaces and unwrap the links a
+ * shipped document cannot follow. Files keep their names; only content changes.
+ *
+ * Unwrapping is a Markdown edit and stops at `.md`: run over a `.ts` or `.json`
+ * surface it rewrites markdown-shaped string literals — the gate specs' own
+ * link fixtures — and the adopter's `check:all` fails on the copy.
  * @param root - the copied tree's root, for repo-relative link resolution.
  * @param dir - the directory being walked.
  * @param identities - target project name.
@@ -144,15 +163,14 @@ async function renameTree(root: string, dir: string, identities: RenameIdentitie
       await renameTree(root, abs, identities)
     } else if (entry.isFile() && isRenamable(toPosix(entry.name))) {
       const from = toPosix(relative(root, abs))
-      const content = await readFile(abs, 'utf8')
-      const renamed = applyRenames(content, identities)
-      await writeFile(
-        abs,
-        pruneExcludedReferences(renamed, target => {
-          const resolved = resolveReference(from, target)
-          return resolved === null ? null : toPosix(posix.normalize(resolved))
-        }),
-      )
+      const renamed = applyRenames(await readFile(abs, 'utf8'), identities)
+      const content = isLinkSurface(from)
+        ? pruneExcludedReferences(renamed, target => {
+            const resolved = resolveReference(from, target)
+            return resolved === null ? null : toPosix(posix.normalize(resolved))
+          })
+        : renamed
+      await writeFile(abs, content)
     }
   }
 }
@@ -163,14 +181,21 @@ async function runNew(target: string, identities: RenameIdentities): Promise<voi
     throw new Error(`create-adlc-coding: target ${target} exists and is not empty.`)
   }
   await mkdir(targetRoot, { recursive: true })
-  await cp(kitRoot, targetRoot, {
-    recursive: true,
-    // cp's filter includes on true; keep everything the excludes do not match.
-    filter: src => !isExcluded(toPosix(relative(kitRoot, src))),
-  })
+  // A scaffold is a component copy, not a checkout copy: a new project receives
+  // the rule set, while this repository keeps its own notes, sparks, learning,
+  // and changelog history.
+  for (const file of scaffoldFileSet()) {
+    const dest = join(targetRoot, file)
+    await mkdir(dirname(dest), { recursive: true })
+    const template = SCAFFOLD_TEMPLATES[file]
+    if (template === undefined) await cp(join(kitRoot, file), dest)
+    else await writeFile(dest, template(await readFile(join(kitRoot, file), 'utf8')))
+  }
   await renameTree(targetRoot, targetRoot, identities)
-  await ensureClaudeSymlink(targetRoot)
-  await ensureCodebuddySkillsAlias(targetRoot)
+  await ensureClaudeAlias(targetRoot)
+  await ensureClaudeAlias(join(targetRoot, 'scripts'))
+  await ensureSkillsAlias(targetRoot, '.claude', 'Claude Code')
+  await ensureSkillsAlias(targetRoot, '.codebuddy', 'CodeBuddy Code')
   // The postinstall hook (`lefthook install`) requires a git repository;
   // a fresh scaffold owns its initialization.
   const gitInit = spawnSync('git', ['init', '-b', 'main'], { cwd: targetRoot })
@@ -225,8 +250,9 @@ async function runAdopt(
     await mkdir(dirname(dest), { recursive: true })
     await cp(join(kitRoot, file), dest)
   }
-  await ensureClaudeSymlink(targetRoot)
-  await ensureCodebuddySkillsAlias(targetRoot)
+  await ensureClaudeAlias(targetRoot)
+  await ensureSkillsAlias(targetRoot, '.claude', 'Claude Code')
+  await ensureSkillsAlias(targetRoot, '.codebuddy', 'CodeBuddy Code')
   // The runner scripts point at scripts/run-gates.ts; merging them without the
   // gates component would advertise commands the target cannot run.
   if (components.includes('gates')) await mergePackageScripts(targetRoot)

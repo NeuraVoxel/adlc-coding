@@ -2,7 +2,7 @@
 
 English | [中文](README.zh.md)
 
-An AI work-paradigm and workflow kit: the paradigms and the `adlc-*` workflow skills, plus a verified engineering-rule system (layered AGENTS.md instructions, a `run-gates` aggregate, lefthook hooks, Agent Notes decision records). It is language-agnostic and ships no application code — any stack adopts the rule set with `adopt` and keeps its own root.
+An AI work-paradigm and workflow kit: the paradigms and the `adlc-*` skills, plus a verified engineering-rule system (layered AGENTS.md instructions, a `run-gates` aggregate, lefthook hooks, Agent Notes decision records). It is language-agnostic and ships no application code — any stack adopts the rule set with `adopt` and keeps its own root.
 
 ## Quick start
 
@@ -23,7 +23,7 @@ pnpm run create -- new ../my-app --name my-app
 pnpm run create -- adopt ../existing-app --only rules,gates,docs,workflows,ci
 ```
 
-`new` copies everything except `.git`, `node_modules`, build output, and the lockfile, renames `adlc-coding` to `--name`, and recreates the `CLAUDE.md` alias. `adopt` never overwrites without `--force`, merges the missing runner scripts into `package.json`, and prints the prerequisites the gates assume. Details: [installer README](packages/create-adlc-coding/README.md).
+`new` writes a component copy, not a checkout copy: the new project receives the rule set — the components `adopt` installs, plus the root manifest, tool configuration, and `scripts/` supplement a fresh project needs — while this repository keeps its own notes, sparks, learning, and changelog history. It renames `adlc-coding` to `--name` and recreates the `CLAUDE.md` alias. `adopt` never overwrites without `--force`, merges the missing runner scripts into `package.json`, and prints the prerequisites the gates assume. Details: [installer README](packages/create-adlc-coding/README.md).
 
 ## Layout
 
@@ -33,9 +33,9 @@ pnpm run create -- adopt ../existing-app --only rules,gates,docs,workflows,ci
 | `scripts/` | Gate orchestrator and verify scripts |
 | `docs/` | Architecture map, testing strategy, release contract |
 | `.agents/notes/` | Decision records (Agent Notes) |
-| `.agents/inbox/`, `.agents/learning/` | Spark queue (`QUEUE.md` board) and session retrospectives |
-| `.agents/skills/` | The `adlc-*` workflow skills (inbox capture/promote, learning note, release) |
-| `.codebuddy/skills/` | Symlink alias to `.agents/skills` — CodeBuddy Code discovers project skills only here |
+| `.agents/inbox/`, `.agents/learning/`, `.agents/research/` | Spark queue (`QUEUE.md` board), session retrospectives, and cited research notes |
+| `.agents/skills/` | The `adlc-*` skills this kit ships (inbox capture/promote/view, implement, learning note, research, release) |
+| `.claude/skills/`, `.codebuddy/skills/` | Symlink aliases to `.agents/skills` — Claude Code, CodeBuddy Code, and zcode discover project skills only here |
 
 Docs are English-primary with `.zh.md` Chinese counterparts; `pnpm run doc-sync` rejects drift. `AGENTS.md` (agent-facing) is English-only.
 

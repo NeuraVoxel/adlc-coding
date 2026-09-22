@@ -13,6 +13,13 @@ import { collectNotePaths, parseNotePath, type Lifecycle } from './agent-note-tr
 export const ALTERNATIVES_ESCAPE =
   '<!-- agent-note-format: alternatives-not-recorded (pre-format Agent Note) -->'
 
+/**
+ * The date these content rules took effect. The escape comment grandfathers
+ * notes that predate the rules; a note dated on or after this day must record
+ * its alternatives for real.
+ */
+export const FORMAT_ADOPTED = '2026-09-20'
+
 /** Headings that describe plans, forbidden once a decision has shipped. */
 export const FORBIDDEN_AFTER_SHIPPING = [
   '## Proposal',
@@ -72,6 +79,9 @@ export function findFormatViolations(relPosixPath: string, content: string): str
   // The escape comment stands in place of the alternatives section, so it
   // exempts that section from the skeleton as well as from the mandate.
   const hasEscape = lines.includes(ALTERNATIVES_ESCAPE)
+  if (hasEscape && note.date >= FORMAT_ADOPTED) {
+    fail(`the pre-format escape comment is only valid for notes dated before ${FORMAT_ADOPTED}`)
+  }
   for (const section of REQUIRED_SECTIONS[note.lifecycle]) {
     if (section === '## Alternatives considered' && hasEscape) continue
     if (!hasHeading(section)) fail(`missing required section "${section}"`)

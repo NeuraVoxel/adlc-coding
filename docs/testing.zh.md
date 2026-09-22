@@ -21,7 +21,7 @@ pnpm exec vitest run packages/create-adlc-coding/tests/lib.spec.ts
 pnpm run doc-sync
 ```
 
-安装器变更需要真实冒烟：脚手架到临时目录并在其中跑门禁——拷贝出的 checkout 就是产品。
+安装器变更需要真实冒烟：脚手架到临时目录并在其中跑门禁——脚手架产出的那棵树就是产品：拷贝跟不上的链接、或被拷贝改写的测试夹具，只在那里暴露，别处发现不了。
 
 ## 演进顺序
 

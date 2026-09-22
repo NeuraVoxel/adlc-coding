@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { CLASSES, LIFECYCLES, findTreeViolations, parseNotePath } from './agent-note-tree.ts'
+import { CLASSES, LIFECYCLES, findTreeViolations, isSupplementPath, parseNotePath } from './agent-note-tree.ts'
 
 describe('parseNotePath', () => {
   it('parses every lifecycle and class', () => {
@@ -54,5 +54,32 @@ describe('findTreeViolations', () => {
     ])
     expect(violations).toHaveLength(2)
     expect(violations[0]).toContain('unclassifiable note path')
+  })
+
+  it('accepts agent-facing supplements at the root and in a lifecycle', () => {
+    expect(
+      findTreeViolations([
+        'AGENTS.md',
+        'implemented/AGENTS.md',
+        'archived/CLAUDE.md',
+        'implemented/process/2026-09-15-topic.md',
+      ]),
+    ).toEqual([])
+  })
+
+  it('rejects any other stray file, including a generated index', () => {
+    const violations = findTreeViolations(['INDEX.md', 'implemented/notes.md', 'implemented/process/notes/AGENTS.md'])
+    expect(violations).toHaveLength(3)
+    expect(violations[0]).toContain('unclassifiable note path')
+  })
+})
+
+describe('isSupplementPath', () => {
+  it('rejects a supplement nested below a lifecycle', () => {
+    expect(isSupplementPath('implemented/process/AGENTS.md')).toBe(false)
+  })
+
+  it('rejects a note-shaped filename', () => {
+    expect(isSupplementPath('implemented/2026-09-15-topic.md')).toBe(false)
   })
 })
